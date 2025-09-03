@@ -1,6 +1,6 @@
-## EPIC 0 – Project Bootstrap & DX
+## EPIC 0 – ✅ Done Project Bootstrap & DX
 
-### Story 0.1 – Set Up Expo + TypeScript + Expo Router
+### Story 0.1 – ✅ Done Set Up Expo + TypeScript + Expo Router
 
 **Description:**
 
@@ -14,31 +14,32 @@ Initialize the project with latest Expo SDK, enable TypeScript (strict mode), an
 
 ---
 
-### Story 0.3 – Install NativeWind + Tailwind Config
+### Story 0.3 – ✅ Done Define Brand Design System
 
 **Description:**
 
-Configure NativeWind for Tailwind-based styling and define base design tokens (colors, fonts).
+Define base design tokens (colors, fonts) and styling approach using React Native StyleSheet.
 
 **Acceptance Criteria:**
 
-- `tailwind.config.js` includes brand colors: gunmetal, mint, coral.
-- Fonts set to system font stack.
-- Sample view styled with Tailwind classes.
+- Brand colors defined: gunmetal, mint, coral.
+- System font stack configured.
+- Design tokens accessible in components.
 
 ---
 
-### Story 0.4 – Create Shared UI Primitives
+### Story 0.4 – ✅ Done Create Shared UI Primitives
 
 **Description:**
 
-Build base UI components using NativeWind and Tailwind classes.
+Build base UI components using React Native styling with design system colors.
 
 **Acceptance Criteria:**
 
 - Components exist: `<Button>`, `<Chip>`, `<Card>`, `<ProgressBar>`.
 - Accept styling overrides via props.
 - Use system fonts and brand colors.
+- Built with React Native StyleSheet.
 
 ---
 
