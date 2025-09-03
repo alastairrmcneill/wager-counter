@@ -1,0 +1,571 @@
+## EPIC 0 – Project Bootstrap & DX
+
+### Story 0.1 – Set Up Expo + TypeScript + Expo Router
+
+**Description:**
+
+Initialize the project with latest Expo SDK, enable TypeScript (strict mode), and configure Expo Router for file-based navigation.
+
+**Acceptance Criteria:**
+
+- App boots in dev on iOS and Android.
+- `/` route renders a test screen.
+- `tsconfig.json` uses `strict: true`.
+
+---
+
+### Story 0.3 – Install NativeWind + Tailwind Config
+
+**Description:**
+
+Configure NativeWind for Tailwind-based styling and define base design tokens (colors, fonts).
+
+**Acceptance Criteria:**
+
+- `tailwind.config.js` includes brand colors: gunmetal, mint, coral.
+- Fonts set to system font stack.
+- Sample view styled with Tailwind classes.
+
+---
+
+### Story 0.4 – Create Shared UI Primitives
+
+**Description:**
+
+Build base UI components using NativeWind and Tailwind classes.
+
+**Acceptance Criteria:**
+
+- Components exist: `<Button>`, `<Chip>`, `<Card>`, `<ProgressBar>`.
+- Accept styling overrides via props.
+- Use system fonts and brand colors.
+
+---
+
+## 🧠 EPIC 1 – Domain Model & Local Storage Foundation
+
+### Story 1.1 – Define Domain Types and Helpers
+
+**Description:**
+
+Create types and utility functions for counters, spins, and currency conversions.
+
+**Acceptance Criteria:**
+
+- Types for `Counter`, `Spin` created.
+- Utility functions: `toPence`, `fromPence`, `formatGBP`, `ceilDiv`.
+
+---
+
+### Story 1.2 – Zustand Store Setup with Slices
+
+**Description:**
+
+Use Zustand to manage app state and slice logic by feature.
+
+**Acceptance Criteria:**
+
+- Stores: `counterStore`, `spinStore`, `sessionStore`.
+- Each store exposes get/set actions.
+
+---
+
+### Story 1.3 – MMKV Persistence and Hydration
+
+**Description:**
+
+Integrate MMKV for local storage and hydrate state on app start.
+
+**Acceptance Criteria:**
+
+- Counters and spins are saved/loaded from MMKV.
+- Hydration completes under 150ms with 1000+ spins.
+
+---
+
+### Story 1.4 – Validate WageredPence Against Spin History
+
+**Description:**
+
+Verify that `wageredPence` equals the sum of all spins and auto-correct if mismatched.
+
+**Acceptance Criteria:**
+
+- Validation runs on load.
+- Drift is logged and fixed in background.
+
+---
+
+## ⚙️ EPIC 2 – Core Counting Engine
+
+### Story 2.1 – Implement Increment Logic
+
+**Description:**
+
+Add spin with current stake and update `wageredPence`. Debounce taps to avoid duplicates.
+
+**Acceptance Criteria:**
+
+- Spin saved with timestamp, stake, counterId.
+- `wageredPence` updates correctly.
+- Tap debounce ~120ms.
+- Haptic feedback triggered.
+
+---
+
+### Story 2.2 – Implement Undo Logic
+
+**Description:**
+
+Allow user to undo the last spin for a counter. Unlimited depth.
+
+**Acceptance Criteria:**
+
+- Removes most recent spin.
+- Recalculates `wageredPence`.
+- Multiple undos allowed.
+
+---
+
+### Story 2.3 – Implement Stake Change (Future Spins Only)
+
+**Description:**
+
+Allow users to change the stake mid-session. Affects only new spins.
+
+**Acceptance Criteria:**
+
+- `currentStakePence` updates on change.
+- Previous spins retain original stake.
+
+---
+
+### Story 2.4 – Paginate Spin History Selector
+
+**Description:**
+
+Expose a selector to retrieve spins in paginated chunks.
+
+**Acceptance Criteria:**
+
+- Selector returns `{spins: Spin[], total: number}`.
+- Accepts `pageSize` and `page` params.
+
+---
+
+## 📱 EPIC 3 – Counter Detail Screen
+
+### Story 3.1 – Build Counter Screen Layout
+
+**Description:**
+
+Implement data zone with all display fields and layout per spec.
+
+**Acceptance Criteria:**
+
+- Shows name, `£wagered/£target`, progress bar.
+- Shows overshoot if exceeded.
+- Shows session stats: elapsed time, avg spins/min.
+
+---
+
+### Story 3.2 – Add Increment and Undo Buttons
+
+**Description:**
+
+Implement primary actions area with styled buttons and interactions.
+
+**Acceptance Criteria:**
+
+- Increment button shows `+£x.xx` (current stake).
+- Undo button removes last spin.
+- Buttons styled with correct size and radius.
+
+---
+
+### Story 3.3 – Implement Change Stake Panel
+
+**Description:**
+
+Create panel with quick chip options and a numeric input.
+
+**Acceptance Criteria:**
+
+- Chips: 0.10 / 0.20 / 0.40 / 0.60 / 1.00 / 2.00.
+- Input: numeric, decimal (2dp), dot separator.
+- Updates stake for next spin.
+
+---
+
+## 🧭 EPIC 4 – Onboarding Wizard
+
+### Story 4.1 – Create Welcome Screen
+
+**Description:**
+
+First screen shown on fresh install with a “Continue” action.
+
+**Acceptance Criteria:**
+
+- Welcome text + Continue button.
+- Navigates to first step in wizard.
+
+---
+
+### Story 4.2 – Build 3-Step Wizard (Name → Target → Stake)
+
+**Description:**
+
+Allow users to configure their first counter in a guided flow.
+
+**Acceptance Criteria:**
+
+- Step 1: Name (prefilled with “Counter”).
+- Step 2: Target input (GBP, 2dp, >0).
+- Step 3: Stake input (GBP, 2dp, >0).
+- “Spins needed” calculated live.
+- After create → navigates to Counter screen.
+
+---
+
+### Story 4.3 – Emit Analytics During Onboarding
+
+**Description:**
+
+Track user progress through onboarding.
+
+**Acceptance Criteria:**
+
+- Events fired: `onboarding_start`, `page1`, `page2`, `page3`, `complete`, `counter_create`.
+
+---
+
+## 🏠 EPIC 5 – Home Screen & Subsequent Counter Creation
+
+---
+
+### Story 5.1 – Build Home Screen with Counter List
+
+**Description:**
+
+Show a scrollable vertical list of all existing counters with basic progress info.
+
+**Acceptance Criteria:**
+
+- List shows: name, `£wagered / £target`, progress bar.
+- Virtualized list supports 100+ counters.
+- Empty state prompts user to create a counter.
+
+---
+
+### Story 5.2 – Single-Screen Counter Creator
+
+**Description:**
+
+Allow users to create new counters after onboarding.
+
+**Acceptance Criteria:**
+
+- Inputs: Name, Target (GBP), Stake (GBP).
+- Validation: all > 0, 2dp, numeric keypad.
+- Optional live “Spins needed” calculation.
+- On create → navigates to Counter screen.
+
+---
+
+### Story 5.3 – List Item Navigation to Counter Detail
+
+**Description:**
+
+Allow tapping on a counter in the list to open its detail screen.
+
+**Acceptance Criteria:**
+
+- Tapping item opens corresponding counter screen.
+- Screen shows correct data for selected counter.
+
+---
+
+### Story 5.4 – Emit Analytics on Counter Creation
+
+**Description:**
+
+Track new counter creations.
+
+**Acceptance Criteria:**
+
+- `counter_create` event fired on each successful create.
+
+---
+
+### Story 5.5 – Trigger Paywall After Each Counter Creation
+
+**Description:**
+
+Show the paywall after a new counter is created.
+
+**Acceptance Criteria:**
+
+- After create, paywall shows.
+- If under limit (<=2), show upsell with “Continue free”.
+- If over limit (>2), block until purchase or restore.
+
+---
+
+## ✅ EPIC 6 – Completion UX
+
+---
+
+### Story 6.1 – Show Completed Dialog on Target Reached
+
+**Description:**
+
+Display summary dialog when a counter hits or exceeds its target.
+
+**Acceptance Criteria:**
+
+- Shows “Target reached” message.
+- Includes total spins, elapsed time, avg spins/min.
+- “OK” dismisses the dialog.
+- Counter remains active (not archived).
+
+---
+
+### Story 6.2 – Track Completion in Analytics
+
+**Description:**
+
+Emit analytics when a counter completes.
+
+**Acceptance Criteria:**
+
+- Add `completed: true` to `increment_tap` event when target is reached.
+
+---
+
+## 💰 EPIC 7 – Monetization & RevenueCat Integration
+
+---
+
+### Story 7.1 – Integrate RevenueCat SDK
+
+**Description:**
+
+Add RevenueCat with lifetime unlock and 3-day trial.
+
+**Acceptance Criteria:**
+
+- SDK is installed and configured.
+- Products fetched on app start.
+- Entitlement: `pro_lifetime` respected
+
+---
+
+### Story 7.2 – Build Paywall Screen
+
+**Description:**
+
+Design paywall with upsell messaging and purchase options.
+
+**Acceptance Criteria:**
+
+- Shows benefits of Pro.
+- Buttons: Purchase, Restore, Continue Free (only when <=2 counters).
+- Responsive layout for small devices.
+
+---
+
+### Story 7.3 – Purchase and Restore Flow
+
+**Description:**
+
+Enable purchasing and restoring of `pro_lifetime`.
+
+**Acceptance Criteria:**
+
+- Purchase succeeds and unlocks entitlement.
+- Restore button reinstates access if previously purchased.
+- Analytics: `purchase_start`, `purchase_success`, `purchase_fail`.
+
+---
+
+### Story 7.4 – Gate Exports Behind Entitlement
+
+**Description:**
+
+Restrict CSV/PDF export to Pro users.
+
+**Acceptance Criteria:**
+
+- Export buttons disabled or hidden for free users.
+- Entitlement check used before allowing export.
+
+---
+
+### Story 7.5 – Emit Analytics on Paywall Views
+
+**Description:**
+
+Track paywall views and actions.
+
+**Acceptance Criteria:**
+
+- `paywall_view` fired each time it’s shown.
+- Include counter ID if applicable.
+
+---
+
+## 📤 EPIC 8 – Exports (CSV & PDF)
+
+---
+
+### Story 8.1 – Export Counters as CSV (All)
+
+**Description:**
+
+Allow Pro users to export all counters as a CSV file.
+
+**Acceptance Criteria:**
+
+- CSV columns: `id,name,target,totalWagered,progress%,createdAt,updatedAt`.
+- Uses `expo-file-system` and `expo-sharing` to save/share.
+- Fires `export_csv`.
+
+---
+
+### Story 8.2 – Export Spins as CSV (Per Counter)
+
+**Description:**
+
+Allow Pro users to export spins for a single counter.
+
+**Acceptance Criteria:**
+
+- CSV columns: `spinId,timestamp ISO,stake,cumulativeWagered`.
+- Filename includes counter name or ID.
+- Fires `export_csv`.
+
+---
+
+### Story 8.3 – Export PDF Summary (Per Counter)
+
+**Description:**
+
+Generate a branded PDF report for a single counter.
+
+**Acceptance Criteria:**
+
+- Header: name, created date, target, total wagered, progress %, overshoot.
+- Stats: total spins, elapsed time, avg/min.
+- Mini history table: first + last N spins with counts.
+- Styled brand header and progress bar.
+- Fires `export_pdf`.
+
+---
+
+## 📊 EPIC 9 – Analytics & Instrumentation
+
+---
+
+### Story 9.1 – Analytics Client with Swappable Backends
+
+**Description:**
+
+Create an abstraction layer over analytics providers.
+
+**Acceptance Criteria:**
+
+- Unified `trackEvent(name, payload)` function.
+- Backend can be replaced with Segment, Amplitude, or custom.
+
+---
+
+### Story 9.2 – Emit Core Events
+
+**Description:**
+
+Track key app interactions as defined in the spec.
+
+**Acceptance Criteria:**
+
+- Events emitted:
+  - `onboarding_start/page1/page2/page3/complete`
+  - `counter_create`
+  - `paywall_view`
+  - `purchase_start/success/fail`
+  - `increment_tap`
+  - `undo_tap`
+  - `stake_change`
+  - `export_csv`
+  - `export_pdf`
+
+---
+
+### Story 9.3 – Add Context to Analytics Payloads
+
+**Description:**
+
+Include useful metadata in all events.
+
+**Acceptance Criteria:**
+
+- Fields: platform, appVersion, isPro, counterId (when relevant), stakePence, targetPence, timeSinceStart (when applicable).
+
+---
+
+## 🎨 EPIC 10 – Brand, Theming, Haptics & Polish
+
+---
+
+### Story 10.1 – Apply Final Brand Colors and Fonts
+
+**Description:**
+
+Apply the 60/30/10 Calm Mint palette and system fonts across the app.
+
+**Acceptance Criteria:**
+
+- Gunmetal/Mint/Coral applied correctly via Tailwind config.
+- Text uses system fonts (SF / Roboto).
+- Screens meet basic WCAG contrast.
+
+---
+
+### Story 10.2 – Add App Icon, Splash Screen & Logo
+
+**Description:**
+
+Implement branding assets across platforms.
+
+**Acceptance Criteria:**
+
+- Logo: Counter Ring style.
+- App icon and splash screen use brand palette.
+- Assets load correctly on iOS and Android.
+
+---
+
+### Story 10.3 – Haptics on Increment and Undo
+
+**Description:**
+
+Add subtle vibration feedback to key user actions.
+
+**Acceptance Criteria:**
+
+- Light impact on `increment` and `undo` using `expo-haptics`.
+- Controlled by feature flag.
+
+---
+
+### Story 10.4 – Polish Buttons and Progress Styles
+
+**Description:**
+
+Ensure key components reflect final UI polish.
+
+**Acceptance Criteria:**
+
+- Buttons: correct radius, padding, sizing.
+- Progress bar: rounded ends, mint fill.
+- Dynamic type support verified.
