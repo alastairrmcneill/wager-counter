@@ -43,9 +43,9 @@ Build base UI components using React Native styling with design system colors.
 
 ---
 
-## 🧠 EPIC 1 – Domain Model & Local Storage Foundation
+## 🧠 EPIC 1 – ✅ Done Domain Model & Local Storage Foundation
 
-### Story 1.1 – Define Domain Types and Helpers
+### Story 1.1 – ✅ Done Define Domain Types and Helpers
 
 **Description:**
 
@@ -58,7 +58,7 @@ Create types and utility functions for counters, spins, and currency conversions
 
 ---
 
-### Story 1.2 – Zustand Store Setup with Slices
+### Story 1.2 – ✅ Done Zustand Store Setup with Slices
 
 **Description:**
 
@@ -71,7 +71,7 @@ Use Zustand to manage app state and slice logic by feature.
 
 ---
 
-### Story 1.3 – MMKV Persistence and Hydration
+### Story 1.3 – ✅ Done MMKV Persistence and Hydration
 
 **Description:**
 
@@ -84,7 +84,7 @@ Integrate MMKV for local storage and hydrate state on app start.
 
 ---
 
-### Story 1.4 – Validate WageredPence Against Spin History
+### Story 1.4 – ✅ Done Validate WageredPence Against Spin History
 
 **Description:**
 
