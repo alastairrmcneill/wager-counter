@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import { useCounterStore } from "../store/counterStore";
 import { useSessionStore } from "../store/sessionStore";
 import { useSpinStore } from "../store/spinStore";
+import { safeHapticFeedback } from "../utils/errors";
 
 /**
  * Hook for handling counter undo functionality
@@ -14,7 +15,7 @@ export function useCounterUndo() {
 
   const undoLastSpin = useCallback(
     async (counterId: string) => {
-      // Get current counter
+      // Get and validate counter
       const counter = getCounter(counterId);
       if (!counter) {
         console.warn(`Counter with id ${counterId} not found`);
@@ -41,12 +42,7 @@ export function useCounterUndo() {
       updateSessionActivity(counterId);
 
       // Trigger haptic feedback (different style for undo)
-      try {
-        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-      } catch (error) {
-        // Haptics might not be available on all devices/simulators
-        console.log("Haptic feedback not available:", error);
-      }
+      await safeHapticFeedback(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium));
 
       return true;
     },

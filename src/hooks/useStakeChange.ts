@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { useCounterStore } from "../store/counterStore";
+import { validateStake } from "../utils/errors";
 
 /**
  * Hook for handling stake changes for a counter
@@ -10,8 +11,9 @@ export function useStakeChange() {
   const changeStake = useCallback(
     (counterId: string, stakePence: number) => {
       // Validate stake is positive
-      if (stakePence <= 0) {
-        console.warn("Stake must be greater than 0");
+      const stakeValidation = validateStake(stakePence);
+      if (!stakeValidation.isValid) {
+        console.warn(stakeValidation.error);
         return false;
       }
 
