@@ -1,34 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { CounterControls } from "@/src/components/CounterControls";
 import { CounterStats } from "@/src/components/CounterStats";
-import { RecentSpins } from "@/src/components/RecentSpins";
-import { StakeChanger } from "@/src/components/StakeChanger";
 import { ThemedText } from "@/src/components/ThemedText";
 import { ThemedView } from "@/src/components/ThemedView";
 import { useCounterIncrement } from "@/src/hooks/useCounterIncrement";
 import { useCounterUndo } from "@/src/hooks/useCounterUndo";
-import { useStakeChange } from "@/src/hooks/useStakeChange";
 import { useCounterStore, useSessionStore, useSpinStore } from "@/src/store";
-import { toPence } from "@/src/utils/currency";
 
-export default function HomeScreen() {
+export default function CounterScreen() {
   const { counters, addCounter, getCounter } = useCounterStore();
   const { getSpinsForCounter } = useSpinStore();
   const { startSession, getSessionStats } = useSessionStore();
   const { incrementCounter } = useCounterIncrement();
   const { undoLastSpin, canUndo } = useCounterUndo();
-  const { changeStake } = useStakeChange();
   const [testCounterId, setTestCounterId] = useState<string | null>(null);
 
   // Create a test counter if none exists
   useEffect(() => {
     if (counters.length === 0) {
       addCounter({
-        name: "Test Counter",
-        targetPence: 5000, // £50.00
-        wageredPence: 0,
+        name: "Spin Counter",
+        targetPence: 250000, // £2,500.00 to match the design
+        wageredPence: 125000, // £1,250.00 to match the design
         currentStakePence: 50, // £0.50
       });
     } else {
@@ -64,60 +59,77 @@ export default function HomeScreen() {
     }
   };
 
-  const handleStakeChange = (pounds: number) => {
-    if (!testCounterId) {
-      Alert.alert("Error", "No test counter available");
-      return;
-    }
-
-    const stakePence = toPence(pounds);
-    const success = changeStake(testCounterId, stakePence);
-    if (!success) {
-      Alert.alert("Error", "Failed to change stake");
-    }
-  };
-
   const counter = testCounterId ? getCounter(testCounterId) : null;
   const spins = testCounterId ? getSpinsForCounter(testCounterId) : [];
   const sessionStats = testCounterId ? getSessionStats(testCounterId) : { elapsedMs: 0, avgSpinsPerMin: 0 };
 
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText type="title">Wager Counter</ThemedText>
-
-      {counter && (
-        <View style={styles.counterContainer}>
-          <ThemedText type="subtitle">{counter.name}</ThemedText>
-
-          <CounterStats counter={counter} spinsCount={spins.length} avgSpinsPerMin={sessionStats.avgSpinsPerMin} />
-
-          <CounterControls
-            counter={counter}
-            onIncrement={handleIncrement}
-            onUndo={handleUndo}
-            canUndo={testCounterId ? canUndo(testCounterId) : false}
-          />
-
-          <StakeChanger onStakeChange={handleStakeChange} />
-
-          <RecentSpins spins={spins} />
+    <SafeAreaView style={styles.safeArea}>
+      <ThemedView style={styles.container}>
+        {/* Header */}
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.headerButton}>
+            <ThemedText style={styles.headerIcon}>←</ThemedText>
+          </TouchableOpacity>
+          <ThemedText style={styles.headerTitle}>{counter?.name || "Spin Counter"}</ThemedText>
+          <TouchableOpacity style={styles.headerButton}>
+            <ThemedText style={styles.headerIcon}>⚙</ThemedText>
+          </TouchableOpacity>
         </View>
-      )}
-    </ThemedView>
+
+        {counter && (
+          <View style={styles.content}>
+            {/* Stats Section */}
+            <CounterStats counter={counter} spinsCount={spins.length} avgSpinsPerMin={sessionStats.avgSpinsPerMin} />
+
+            {/* Controls Section */}
+            <CounterControls
+              counter={counter}
+              onIncrement={handleIncrement}
+              onUndo={handleUndo}
+              canUndo={testCounterId ? canUndo(testCounterId) : false}
+            />
+          </View>
+        )}
+      </ThemedView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   container: {
     flex: 1,
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "rgba(0, 0, 0, 0.1)",
+  },
+  headerButton: {
+    width: 44,
+    height: 44,
     alignItems: "center",
     justifyContent: "center",
-    padding: 20,
   },
-  counterContainer: {
-    alignItems: "center",
-    padding: 20,
-    gap: 16,
-    width: "100%",
+  headerIcon: {
+    fontSize: 20,
+    fontWeight: "600",
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    textAlign: "center",
+  },
+  content: {
+    flex: 1,
+    justifyContent: "space-between",
+    paddingVertical: 20,
   },
 });
