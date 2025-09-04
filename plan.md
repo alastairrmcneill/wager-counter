@@ -97,9 +97,9 @@ Verify that `wageredPence` equals the sum of all spins and auto-correct if misma
 
 ---
 
-## ⚙️ EPIC 2 – Core Counting Engine
+## ⚙️ EPIC 2 – ✅ Done Core Counting Engine
 
-### Story 2.1 – Implement Increment Logic
+### Story 2.1 – ✅ Done Implement Increment Logic
 
 **Description:**
 
@@ -114,7 +114,7 @@ Add spin with current stake and update `wageredPence`. Debounce taps to avoid du
 
 ---
 
-### Story 2.2 – Implement Undo Logic
+### Story 2.2 – ✅ Done Implement Undo Logic
 
 **Description:**
 
@@ -128,7 +128,7 @@ Allow user to undo the last spin for a counter. Unlimited depth.
 
 ---
 
-### Story 2.3 – Implement Stake Change (Future Spins Only)
+### Story 2.3 – ✅ Done Implement Stake Change (Future Spins Only)
 
 **Description:**
 
@@ -138,19 +138,6 @@ Allow users to change the stake mid-session. Affects only new spins.
 
 - `currentStakePence` updates on change.
 - Previous spins retain original stake.
-
----
-
-### Story 2.4 – Paginate Spin History Selector
-
-**Description:**
-
-Expose a selector to retrieve spins in paginated chunks.
-
-**Acceptance Criteria:**
-
-- Selector returns `{spins: Spin[], total: number}`.
-- Accepts `pageSize` and `page` params.
 
 ---
 

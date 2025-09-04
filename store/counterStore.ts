@@ -13,6 +13,7 @@ interface CounterActions {
   setActiveCounter: (id: string | null) => void;
   getCounter: (id: string) => Counter | undefined;
   getAllCounters: () => Counter[];
+  updateStake: (id: string, stakePence: number) => void;
 }
 
 type CounterStore = CounterState & CounterActions;
@@ -62,5 +63,13 @@ export const useCounterStore = create<CounterStore>((set, get) => ({
 
   getAllCounters: () => {
     return get().counters;
+  },
+
+  updateStake: (id, stakePence) => {
+    set((state) => ({
+      counters: state.counters.map((counter) =>
+        counter.id === id ? { ...counter, currentStakePence: stakePence, updatedAt: Date.now() } : counter
+      ),
+    }));
   },
 }));
