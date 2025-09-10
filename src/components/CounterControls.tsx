@@ -40,6 +40,7 @@ export function CounterControls({ counter, onIncrement, onUndo, canUndo }: Count
 
 const styles = StyleSheet.create({
   controlsContainer: {
+    flex: 1,
     width: "100%",
     paddingHorizontal: 24,
     gap: 16,
@@ -82,7 +83,8 @@ const styles = StyleSheet.create({
     color: brandColors.coral[600],
   },
   spinButton: {
-    backgroundColor: brandColors.gunmetal[200],
+    flex: 1,
+    backgroundColor: brandColors.emerald[200],
     borderRadius: 20,
     paddingVertical: 40,
     paddingHorizontal: 32,
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 8,
     borderWidth: 3,
-    borderColor: brandColors.gunmetal[300],
+    borderColor: brandColors.emerald[300],
   },
   spinIconContainer: {
     marginBottom: 8,
@@ -98,17 +100,17 @@ const styles = StyleSheet.create({
   spinIcon: {
     fontSize: 32,
     fontWeight: "700",
-    color: brandColors.gunmetal[700],
+    color: brandColors.emerald[700],
   },
   spinTitle: {
     fontSize: 24,
     fontWeight: "700",
-    color: brandColors.gunmetal[900],
+    color: brandColors.emerald[900],
     letterSpacing: 2,
   },
   spinSubtitle: {
     fontSize: 16,
-    color: brandColors.gunmetal[600],
+    color: brandColors.emerald[600],
     marginTop: 4,
   },
 });
