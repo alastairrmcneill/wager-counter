@@ -141,9 +141,9 @@ Allow users to change the stake mid-session. Affects only new spins.
 
 ---
 
-## 📱 EPIC 3 – Counter Detail Screen
+## 📱 EPIC 3 – ✅ Done Counter Detail Screen
 
-### Story 3.1 – Build Counter Screen Layout
+### Story 3.1 – ✅ Done Build Counter Screen Layout
 
 **Description:**
 
@@ -157,7 +157,7 @@ Implement data zone with all display fields and layout per spec.
 
 ---
 
-### Story 3.2 – Add Increment and Undo Buttons
+### Story 3.2 – ✅ Done Add Increment and Undo Buttons
 
 **Description:**
 
@@ -171,7 +171,7 @@ Implement primary actions area with styled buttons and interactions.
 
 ---
 
-### Story 3.3 – Implement Change Stake Panel
+### Story 3.3 – ✅ Done Implement Change Stake Panel
 
 **Description:**
 

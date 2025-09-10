@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Modal, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { brandColors } from "../constants/DesignSystem";
-import { formatGBP, fromPence, toPence } from "../utils/currency";
+import { fromPence, toPence } from "../utils/currency";
 import { ThemedText } from "./ThemedText";
 import { Button } from "./ui";
 
@@ -66,35 +66,12 @@ export function SettingsDialog({ visible, onClose, currentStakePence, onStakeCha
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
-      <View style={styles.overlay}>
-        <View style={styles.dialog}>
-          <View style={styles.header}>
-            <ThemedText style={styles.title}>Settings</ThemedText>
-            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <ThemedText style={styles.closeIcon}>×</ThemedText>
-            </TouchableOpacity>
-          </View>
-
+      <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={onClose}>
+        <TouchableOpacity style={styles.dialog} activeOpacity={1} onPress={(e) => e.stopPropagation()}>
           <View style={styles.content}>
             <ThemedText style={styles.sectionTitle}>Spin Value</ThemedText>
-            <ThemedText style={styles.description}>Set the amount wagered per spin</ThemedText>
-
-            <View style={styles.inputContainer}>
-              <ThemedText style={styles.currencySymbol}>£</ThemedText>
-              <TextInput
-                style={styles.input}
-                value={stakeInput}
-                onChangeText={handleInputChange}
-                placeholder="0.00"
-                keyboardType="decimal-pad"
-                returnKeyType="done"
-                selectTextOnFocus
-                maxLength={7} // Max 1000.00
-              />
-            </View>
 
             <View style={styles.quickSelectContainer}>
-              <ThemedText style={styles.quickSelectLabel}>Quick Select:</ThemedText>
               <View style={styles.quickSelectGrid}>
                 {quickSelectAmounts.map((amount) => (
                   <TouchableOpacity
@@ -118,8 +95,18 @@ export function SettingsDialog({ visible, onClose, currentStakePence, onStakeCha
               </View>
             </View>
 
-            <View style={styles.currentStakeInfo}>
-              <ThemedText style={styles.currentStakeLabel}>Current: {formatGBP(currentStakePence)}</ThemedText>
+            <View style={styles.inputContainer}>
+              <ThemedText style={styles.currencySymbol}>£</ThemedText>
+              <TextInput
+                style={styles.input}
+                value={stakeInput}
+                onChangeText={handleInputChange}
+                placeholder="0.00"
+                keyboardType="decimal-pad"
+                returnKeyType="done"
+                selectTextOnFocus
+                maxLength={7} // Max 1000.00
+              />
             </View>
           </View>
 
@@ -127,8 +114,8 @@ export function SettingsDialog({ visible, onClose, currentStakePence, onStakeCha
             <Button title="Cancel" onPress={onClose} variant="secondary" style={styles.actionButton} />
             <Button title="Save" onPress={handleSave} variant="primary" style={styles.actionButton} />
           </View>
-        </View>
-      </View>
+        </TouchableOpacity>
+      </TouchableOpacity>
     </Modal>
   );
 }
@@ -179,12 +166,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     color: brandColors.gunmetal[900],
-    marginBottom: 8,
-  },
-  description: {
-    fontSize: 14,
-    color: brandColors.gunmetal[600],
-    marginBottom: 20,
+    marginBottom: 16,
   },
   inputContainer: {
     flexDirection: "row",
@@ -194,7 +176,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 12,
     backgroundColor: brandColors.gunmetal[50],
-    marginBottom: 20,
+    marginBottom: 16,
   },
   currencySymbol: {
     fontSize: 18,
@@ -211,12 +193,6 @@ const styles = StyleSheet.create({
   },
   quickSelectContainer: {
     marginBottom: 20,
-  },
-  quickSelectLabel: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: brandColors.gunmetal[700],
-    marginBottom: 12,
   },
   quickSelectGrid: {
     flexDirection: "row",
