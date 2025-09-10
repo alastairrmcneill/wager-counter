@@ -3,10 +3,12 @@ import { Alert, SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-n
 
 import { CounterControls } from "@/src/components/CounterControls";
 import { CounterStats } from "@/src/components/CounterStats";
+import { SettingsDialog } from "@/src/components/SettingsDialog";
 import { ThemedText } from "@/src/components/ThemedText";
 import { ThemedView } from "@/src/components/ThemedView";
 import { useCounterIncrement } from "@/src/hooks/useCounterIncrement";
 import { useCounterUndo } from "@/src/hooks/useCounterUndo";
+import { useStakeChange } from "@/src/hooks/useStakeChange";
 import { useCounterStore, useSessionStore, useSpinStore } from "@/src/store";
 
 export default function CounterScreen() {
@@ -15,7 +17,9 @@ export default function CounterScreen() {
   const { startSession, getSessionStats } = useSessionStore();
   const { incrementCounter } = useCounterIncrement();
   const { undoLastSpin, canUndo } = useCounterUndo();
+  const { changeStake } = useStakeChange();
   const [testCounterId, setTestCounterId] = useState<string | null>(null);
+  const [showSettingsDialog, setShowSettingsDialog] = useState(false);
 
   // Create a test counter if none exists
   useEffect(() => {
@@ -59,6 +63,26 @@ export default function CounterScreen() {
     }
   };
 
+  const handleStakeChange = (newStakePence: number) => {
+    if (!testCounterId) {
+      Alert.alert("Error", "No test counter available");
+      return;
+    }
+
+    const success = changeStake(testCounterId, newStakePence);
+    if (!success) {
+      Alert.alert("Error", "Failed to change stake");
+    }
+  };
+
+  const handleOpenSettings = () => {
+    setShowSettingsDialog(true);
+  };
+
+  const handleCloseSettings = () => {
+    setShowSettingsDialog(false);
+  };
+
   const counter = testCounterId ? getCounter(testCounterId) : null;
   const spins = testCounterId ? getSpinsForCounter(testCounterId) : [];
   const sessionStats = testCounterId ? getSessionStats(testCounterId) : { elapsedMs: 0, avgSpinsPerMin: 0 };
@@ -72,7 +96,7 @@ export default function CounterScreen() {
             <ThemedText style={styles.headerIcon}>←</ThemedText>
           </TouchableOpacity>
           <ThemedText style={styles.headerTitle}>{counter?.name || "Spin Counter"}</ThemedText>
-          <TouchableOpacity style={styles.headerButton}>
+          <TouchableOpacity style={styles.headerButton} onPress={handleOpenSettings}>
             <ThemedText style={styles.headerIcon}>⚙</ThemedText>
           </TouchableOpacity>
         </View>
@@ -90,6 +114,16 @@ export default function CounterScreen() {
               canUndo={testCounterId ? canUndo(testCounterId) : false}
             />
           </View>
+        )}
+
+        {/* Settings Dialog */}
+        {counter && (
+          <SettingsDialog
+            visible={showSettingsDialog}
+            onClose={handleCloseSettings}
+            currentStakePence={counter.currentStakePence}
+            onStakeChange={handleStakeChange}
+          />
         )}
       </ThemedView>
     </SafeAreaView>
