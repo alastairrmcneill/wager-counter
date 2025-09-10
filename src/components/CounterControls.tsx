@@ -50,12 +50,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 12,
     paddingHorizontal: 16,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    borderRadius: 12,
+    backgroundColor: brandColors.coral[200],
+    borderRadius: 20,
     gap: 8,
+    borderWidth: 3,
+    borderColor: brandColors.coral[300],
   },
   undoButtonDisabled: {
     opacity: 0.5,
+    backgroundColor: brandColors.coral[100],
+    borderColor: brandColors.coral[200],
   },
   undoIconContainer: {
     width: 24,
@@ -66,13 +70,16 @@ const styles = StyleSheet.create({
   undoIcon: {
     fontSize: 18,
     fontWeight: "600",
+    color: brandColors.coral[700],
   },
   undoText: {
     fontSize: 16,
     fontWeight: "500",
+    color: brandColors.coral[900],
   },
   undoTextDisabled: {
     opacity: 0.5,
+    color: brandColors.coral[600],
   },
   spinButton: {
     backgroundColor: brandColors.gunmetal[200],

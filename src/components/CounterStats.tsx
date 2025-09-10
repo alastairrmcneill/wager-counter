@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   amountValue: {
     fontSize: 28,
     fontWeight: "700",
-    marginBottom: 4,
+    paddingVertical: 4,
   },
   amountLabel: {
     fontSize: 14,

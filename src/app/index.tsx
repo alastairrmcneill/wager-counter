@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { CounterControls } from "@/src/components/CounterControls";
 import { CounterStats } from "@/src/components/CounterStats";
@@ -25,9 +25,9 @@ export default function CounterScreen() {
   useEffect(() => {
     if (counters.length === 0) {
       addCounter({
-        name: "Spin Counter",
-        targetPence: 250000, // £2,500.00 to match the design
-        wageredPence: 125000, // £1,250.00 to match the design
+        name: "Test Counter",
+        targetPence: 5000, // £50.00 to match the design
+        wageredPence: 955, // £9.55 to match the design
         currentStakePence: 50, // £0.50
       });
     } else {
@@ -88,54 +88,51 @@ export default function CounterScreen() {
   const sessionStats = testCounterId ? getSessionStats(testCounterId) : { elapsedMs: 0, avgSpinsPerMin: 0 };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ThemedView style={styles.container}>
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.headerButton}>
-            <ThemedText style={styles.headerIcon}>←</ThemedText>
-          </TouchableOpacity>
-          <ThemedText style={styles.headerTitle}>{counter?.name || "Spin Counter"}</ThemedText>
-          <TouchableOpacity style={styles.headerButton} onPress={handleOpenSettings}>
-            <ThemedText style={styles.headerIcon}>⚙</ThemedText>
-          </TouchableOpacity>
-        </View>
+    <ThemedView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={false} />
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.headerButton}>
+          <ThemedText style={styles.headerIcon}>←</ThemedText>
+        </TouchableOpacity>
+        <ThemedText style={styles.headerTitle}>{counter?.name || "Test Counter"}</ThemedText>
+        <TouchableOpacity style={styles.headerButton} onPress={handleOpenSettings}>
+          <ThemedText style={styles.headerIcon}>⚙</ThemedText>
+        </TouchableOpacity>
+      </View>
 
-        {counter && (
-          <View style={styles.content}>
-            {/* Stats Section */}
-            <CounterStats counter={counter} spinsCount={spins.length} avgSpinsPerMin={sessionStats.avgSpinsPerMin} />
+      {counter && (
+        <View style={styles.content}>
+          {/* Stats Section */}
+          <CounterStats counter={counter} spinsCount={spins.length} avgSpinsPerMin={sessionStats.avgSpinsPerMin} />
 
-            {/* Controls Section */}
-            <CounterControls
-              counter={counter}
-              onIncrement={handleIncrement}
-              onUndo={handleUndo}
-              canUndo={testCounterId ? canUndo(testCounterId) : false}
-            />
-          </View>
-        )}
-
-        {/* Settings Dialog */}
-        {counter && (
-          <SettingsDialog
-            visible={showSettingsDialog}
-            onClose={handleCloseSettings}
-            currentStakePence={counter.currentStakePence}
-            onStakeChange={handleStakeChange}
+          {/* Controls Section */}
+          <CounterControls
+            counter={counter}
+            onIncrement={handleIncrement}
+            onUndo={handleUndo}
+            canUndo={testCounterId ? canUndo(testCounterId) : false}
           />
-        )}
-      </ThemedView>
-    </SafeAreaView>
+        </View>
+      )}
+
+      {/* Settings Dialog */}
+      {counter && (
+        <SettingsDialog
+          visible={showSettingsDialog}
+          onClose={handleCloseSettings}
+          currentStakePence={counter.currentStakePence}
+          onStakeChange={handleStakeChange}
+        />
+      )}
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
   container: {
     flex: 1,
+    paddingTop: StatusBar.currentHeight || 44, // Add status bar height for Android, default for iOS
   },
   header: {
     flexDirection: "row",
@@ -143,8 +140,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 16,
     paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "rgba(0, 0, 0, 0.1)",
+    backgroundColor: "rgba(128, 128, 128, 0.9)",
   },
   headerButton: {
     width: 44,
@@ -164,6 +160,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     justifyContent: "space-between",
-    paddingVertical: 20,
+    paddingTop: 32,
+    paddingBottom: 20,
   },
 });
