@@ -1,3 +1,4 @@
+import { FontAwesome5 } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { Alert, StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
 
@@ -6,7 +7,6 @@ import { CounterStats } from "@/src/components/CounterStats";
 import { SettingsDialog } from "@/src/components/SettingsDialog";
 import { ThemedText } from "@/src/components/ThemedText";
 import { ThemedView } from "@/src/components/ThemedView";
-import { IconSymbol } from "@/src/components/ui/IconSymbol";
 import { useCounterIncrement } from "@/src/hooks/useCounterIncrement";
 import { useCounterUndo } from "@/src/hooks/useCounterUndo";
 import { useStakeChange } from "@/src/hooks/useStakeChange";
@@ -98,7 +98,7 @@ export default function CounterScreen() {
         </TouchableOpacity>
         <ThemedText style={styles.headerTitle}>{counter?.name || "Test Counter"}</ThemedText>
         <TouchableOpacity style={styles.headerButton} onPress={handleOpenSettings}>
-          <IconSymbol name="coins.fill" size={24} color="#687076" />
+          <FontAwesome5 name="coins" size={22} color="#687076" />
         </TouchableOpacity>
       </View>
 
