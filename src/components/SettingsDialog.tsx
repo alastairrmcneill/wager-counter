@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Alert, Modal, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import React from "react";
+import { Modal, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+
 import { brandColors } from "../constants/DesignSystem";
-import { fromPence, toPence } from "../utils/currency";
+import { useSettingsDialog } from "../hooks/useSettingsDialog";
 import { ThemedText } from "./ThemedText";
 import { Button } from "./ui";
 
@@ -13,54 +14,7 @@ interface SettingsDialogProps {
 }
 
 export function SettingsDialog({ visible, onClose, currentStakePence, onStakeChange }: SettingsDialogProps) {
-  const [stakeInput, setStakeInput] = useState("");
-
-  useEffect(() => {
-    if (visible) {
-      // Initialize input with current stake value
-      setStakeInput(fromPence(currentStakePence).toFixed(2));
-    }
-  }, [visible, currentStakePence]);
-
-  const handleInputChange = (text: string) => {
-    // Remove any non-numeric characters except decimal point
-    let cleanText = text.replace(/[^0-9.]/g, "");
-
-    // Only allow one decimal point
-    const parts = cleanText.split(".");
-    if (parts.length > 2) {
-      cleanText = parts[0] + "." + parts.slice(1).join("");
-    }
-
-    // Limit to 2 decimal places
-    if (parts[1] && parts[1].length > 2) {
-      cleanText = parts[0] + "." + parts[1].substring(0, 2);
-    }
-
-    setStakeInput(cleanText);
-  };
-
-  const handleSave = () => {
-    const stakeValue = parseFloat(stakeInput);
-
-    if (isNaN(stakeValue) || stakeValue <= 0) {
-      Alert.alert("Invalid Stake", "Please enter a valid stake amount greater than £0.00");
-      return;
-    }
-
-    if (stakeValue > 1000) {
-      Alert.alert("Invalid Stake", "Stake amount cannot exceed £1000.00");
-      return;
-    }
-
-    const newStakePence = toPence(stakeValue);
-    onStakeChange(newStakePence);
-    onClose();
-  };
-
-  const handleQuickSelect = (amount: number) => {
-    setStakeInput(amount.toFixed(2));
-  };
+  const { stakeInput, handleInputChange, handleSave, handleQuickSelect } = useSettingsDialog(visible, currentStakePence);
 
   const quickSelectAmounts = [0.1, 0.2, 0.5, 1.0, 2.0, 5.0];
 
@@ -112,7 +66,12 @@ export function SettingsDialog({ visible, onClose, currentStakePence, onStakeCha
 
           <View style={styles.actions}>
             <Button title="Cancel" onPress={onClose} variant="secondary" style={styles.actionButton} />
-            <Button title="Save" onPress={handleSave} variant="primary" style={styles.actionButton} />
+            <Button 
+              title="Save" 
+              onPress={() => handleSave(onStakeChange, onClose)} 
+              variant="primary" 
+              style={styles.actionButton} 
+            />
           </View>
         </TouchableOpacity>
       </TouchableOpacity>

@@ -195,7 +195,7 @@ First screen shown on fresh install with a “Continue” action.
 
 **Acceptance Criteria:**
 
-- Welcome text + Continue button.
+- Icon, app name, subtitle, testimonials and Continue button.
 - Navigates to first step in wizard.
 
 ---
@@ -225,6 +225,20 @@ Track user progress through onboarding.
 **Acceptance Criteria:**
 
 - Events fired: `onboarding_start`, `page1`, `page2`, `page3`, `complete`, `counter_create`.
+
+---
+
+### Story 4.4 – Complete onboarding
+
+**Description:**
+
+Only after user has successfully created their first counter will the onbaording be complete. On subsequenet app opens if the onboarding hasn't been completed the start again, if the onboarding has been completed then lets go straight to the counter screen
+
+**Acceptance Criteria:**
+
+- Onboarding marked as completed after counter created
+- Opening app before onboarding has been completed takes you to welcome page
+- Opening app after onboarding has been completed takes you to counter screen
 
 ---
 
