@@ -12,35 +12,23 @@ interface WizardStepProps {
   title: string;
   children: React.ReactNode;
   onNext?: () => void;
-  onBack?: () => void;
   nextButtonText?: string;
   nextButtonDisabled?: boolean;
   showBackButton?: boolean;
 }
 
 function WizardStep({
-  step,
-  title,
   children,
   onNext,
-  onBack,
   nextButtonText = "Next",
   nextButtonDisabled = false,
   showBackButton = true,
 }: WizardStepProps) {
   return (
     <View style={styles.stepContainer}>
-      <View style={styles.stepHeader}>
-        <Text style={styles.stepNumber}>Step {step} of 3</Text>
-        <Text style={styles.stepTitle}>{title}</Text>
-      </View>
-
       <View style={styles.stepContent}>{children}</View>
 
       <View style={styles.stepActions}>
-        {showBackButton && onBack && (
-          <Button title="Back" onPress={onBack} variant="secondary" style={styles.backButton} />
-        )}
         {onNext && (
           <Button
             title={nextButtonText}
@@ -62,12 +50,6 @@ export function OnboardingWizard() {
   const [counterName, setCounterName] = useState("Counter");
   const [targetAmount, setTargetAmount] = useState("");
   const [stakeAmount, setStakeAmount] = useState("");
-
-  const handleBack = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
 
   const handleNextFromStep1 = () => {
     if (counterName.trim().length === 0) {
@@ -187,7 +169,6 @@ export function OnboardingWizard() {
       step={2}
       title="What's your target amount?"
       onNext={handleNextFromStep2}
-      onBack={handleBack}
       nextButtonDisabled={!targetAmount || parseFloat(targetAmount) <= 0}
     >
       <Text style={styles.description}>Enter the total amount you need to wager</Text>
@@ -216,7 +197,6 @@ export function OnboardingWizard() {
         step={3}
         title="What's your stake per spin?"
         onNext={handleCreateCounter}
-        onBack={handleBack}
         nextButtonText="Create Counter"
         nextButtonDisabled={!stakeAmount || parseFloat(stakeAmount) <= 0}
       >
@@ -236,12 +216,10 @@ export function OnboardingWizard() {
           />
         </View>
 
-        {spinsNeeded && (
-          <View style={styles.spinsNeededContainer}>
-            <Text style={styles.spinsNeededLabel}>Spins needed:</Text>
-            <Text style={styles.spinsNeededValue}>{spinsNeeded.toLocaleString()}</Text>
-          </View>
-        )}
+        <View style={styles.spinsNeededContainer}>
+          <Text style={styles.spinsNeededLabel}>Spins needed:</Text>
+          <Text style={styles.spinsNeededValue}>{spinsNeeded ? spinsNeeded.toLocaleString() : "—"}</Text>
+        </View>
       </WizardStep>
     );
   };

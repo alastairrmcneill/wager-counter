@@ -6,7 +6,7 @@ import CounterScreen from "./counter";
 
 export default function AppNavigator() {
   const { isCompleted, currentStep } = useOnboardingStore();
-  const { counters } = useCounterStore();
+  const { counters, activeCounterId } = useCounterStore();
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -28,8 +28,8 @@ export default function AppNavigator() {
     return <OnboardingWizard />;
   }
 
-  // Show counter screen if onboarding completed and counters exist
-  if (!isCompleted && counters.length > 0) {
+  // Show counter screen if onboarding completed and there's an active counter
+  if (isCompleted && activeCounterId && counters.length > 0) {
     return <CounterScreen />;
   }
 
