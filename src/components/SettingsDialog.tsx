@@ -14,7 +14,10 @@ interface SettingsDialogProps {
 }
 
 export function SettingsDialog({ visible, onClose, currentStakePence, onStakeChange }: SettingsDialogProps) {
-  const { stakeInput, handleInputChange, handleSave, handleQuickSelect } = useSettingsDialog(visible, currentStakePence);
+  const { stakeInput, handleInputChange, handleSave, handleQuickSelect } = useSettingsDialog(
+    visible,
+    currentStakePence
+  );
 
   const quickSelectAmounts = [0.1, 0.2, 0.5, 1.0, 2.0, 5.0];
 
@@ -66,11 +69,11 @@ export function SettingsDialog({ visible, onClose, currentStakePence, onStakeCha
 
           <View style={styles.actions}>
             <Button title="Cancel" onPress={onClose} variant="secondary" style={styles.actionButton} />
-            <Button 
-              title="Save" 
-              onPress={() => handleSave(onStakeChange, onClose)} 
-              variant="primary" 
-              style={styles.actionButton} 
+            <Button
+              title="Save"
+              onPress={() => handleSave(onStakeChange, onClose)}
+              variant="primary"
+              style={styles.actionButton}
             />
           </View>
         </TouchableOpacity>

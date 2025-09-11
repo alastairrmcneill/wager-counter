@@ -12,12 +12,12 @@ interface HeaderProps {
   showSettingsButton?: boolean;
 }
 
-export function Header({ 
-  title, 
-  onBackPress, 
-  onSettingsPress, 
-  showBackButton = true, 
-  showSettingsButton = true 
+export function Header({
+  title,
+  onBackPress,
+  onSettingsPress,
+  showBackButton = true,
+  showSettingsButton = true,
 }: HeaderProps) {
   return (
     <View style={styles.header}>
@@ -25,11 +25,7 @@ export function Header({
         {showBackButton && <ThemedText style={styles.headerIcon}>←</ThemedText>}
       </TouchableOpacity>
       <ThemedText style={styles.headerTitle}>{title}</ThemedText>
-      <TouchableOpacity 
-        style={styles.headerButton} 
-        onPress={onSettingsPress}
-        disabled={!showSettingsButton}
-      >
+      <TouchableOpacity style={styles.headerButton} onPress={onSettingsPress} disabled={!showSettingsButton}>
         {showSettingsButton && <FontAwesome5 name="coins" size={22} color="#687076" />}
       </TouchableOpacity>
     </View>

@@ -1,4 +1,4 @@
-import { useCounterStore, useSessionStore, useSpinStore } from "../store";
+import { useCounterStore, useOnboardingStore, useSessionStore, useSpinStore } from "../store";
 import { Counter, Session, Spin } from "../types";
 import { getStorageItem, setStorageItem, STORAGE_KEYS } from "./mmkv";
 
@@ -38,6 +38,13 @@ export const persistActiveCounterId = (counterId: string | null): void => {
 };
 
 /**
+ * Persist onboarding state to MMKV
+ */
+export const persistOnboarding = (onboardingState: { isCompleted: boolean; currentStep: number }): void => {
+  setStorageItem(STORAGE_KEYS.ONBOARDING, onboardingState);
+};
+
+/**
  * Hydrate all stores from MMKV
  */
 export const hydrateStores = async (): Promise<HydrationResult> => {
@@ -49,6 +56,10 @@ export const hydrateStores = async (): Promise<HydrationResult> => {
     const spins = getStorageItem<Spin[]>(STORAGE_KEYS.SPINS, []);
     const sessions = getStorageItem<Session[]>(STORAGE_KEYS.SESSIONS, []);
     const activeCounterId = getStorageItem<string | null>(STORAGE_KEYS.ACTIVE_COUNTER_ID, null);
+    const onboardingState = getStorageItem<{ isCompleted: boolean; currentStep: number }>(STORAGE_KEYS.ONBOARDING, {
+      isCompleted: false,
+      currentStep: 0,
+    });
 
     // Set state directly (bypass actions to avoid triggers)
     useCounterStore.setState({
@@ -63,6 +74,8 @@ export const hydrateStores = async (): Promise<HydrationResult> => {
     useSessionStore.setState({
       sessions,
     });
+
+    useOnboardingStore.setState(onboardingState);
 
     const duration = Date.now() - startTime;
 
@@ -104,10 +117,16 @@ export const setupPersistence = (): (() => void) => {
     persistSessions(state.sessions);
   });
 
+  // Subscribe to onboarding store changes
+  const unsubOnboarding = useOnboardingStore.subscribe((state) => {
+    persistOnboarding({ isCompleted: state.isCompleted, currentStep: state.currentStep });
+  });
+
   // Return cleanup function
   return () => {
     unsubCounters();
     unsubSpins();
     unsubSessions();
+    unsubOnboarding();
   };
 };

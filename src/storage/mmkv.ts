@@ -10,6 +10,7 @@ export const STORAGE_KEYS = {
   SPINS: "spins",
   SESSIONS: "sessions",
   ACTIVE_COUNTER_ID: "activeCounterId",
+  ONBOARDING: "onboarding",
 } as const;
 
 // Helper functions for JSON serialization
