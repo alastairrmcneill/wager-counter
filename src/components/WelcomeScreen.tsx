@@ -1,6 +1,6 @@
 import { SymbolView } from "expo-symbols";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Dimensions, FlatList, Image, StyleSheet, Text, View } from "react-native";
 
 import { ThemedView } from "@/src/components/ThemedView";
 import { Button } from "@/src/components/ui/Button";
@@ -93,37 +93,51 @@ export function WelcomeScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        {/* App Icon and Title */}
-        <View style={styles.header}>
-          <Image source={require("@/assets/images/icon.png")} style={styles.icon} />
-          <Text style={styles.appName}>Wager Counter</Text>
-          <Text style={styles.subtitle}>Track your betting progress with precision</Text>
-        </View>
+      {/* Background/Placeholder Image with Fade Overlay */}
+      <View style={styles.backgroundImageContainer}>
+        <View style={styles.backgroundImagePlaceholder} />
+        {/* Create fade effect with multiple overlays */}
+        <View style={[styles.fadeOverlay, { opacity: 0.1, height: 60, bottom: 20 }]} />
+        <View style={[styles.fadeOverlay, { opacity: 0.3, height: 40, bottom: 10 }]} />
+        <View style={[styles.fadeOverlay, { opacity: 0.6, height: 20, bottom: 0 }]} />
+      </View>
 
-        {/* Testimonials Section */}
-        <View style={styles.testimonialsSection}>
-          <FlatList
-            ref={flatListRef}
-            data={testimonials}
-            renderItem={renderTestimonial}
-            keyExtractor={(item) => item.id.toString()}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            scrollEnabled={true}
-            style={styles.testimonialCarousel}
-            onScrollToIndexFailed={(info) => {
-              console.warn("Failed to scroll to index:", info);
-            }}
-          />
-        </View>
+      {/* App Icon - Overlapping the image */}
+      <View style={styles.iconContainer}>
+        <Image source={require("@/assets/images/icon.png")} style={styles.icon} />
+      </View>
 
-        {/* Continue Button */}
-        <View style={styles.buttonContainer}>
-          <Button title="Continue" onPress={handleContinue} size="large" style={styles.continueButton} />
-        </View>
-      </ScrollView>
+      {/* Title and Subtitle */}
+      <View style={styles.header}>
+        <Text style={styles.welcomeTitle}>Welcome to{"\n"}Wager Counter!</Text>
+        <Text style={styles.subtitle}>Keep track of your wagering requirements</Text>
+      </View>
+
+      {/* Flexible spacer */}
+      <View style={styles.flexSpacer} />
+
+      {/* Testimonials Section */}
+      <View style={styles.testimonialsSection}>
+        <FlatList
+          ref={flatListRef}
+          data={testimonials}
+          renderItem={renderTestimonial}
+          keyExtractor={(item) => item.id.toString()}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          scrollEnabled={false}
+          style={styles.testimonialCarousel}
+          onScrollToIndexFailed={(info) => {
+            console.warn("Failed to scroll to index:", info);
+          }}
+        />
+      </View>
+
+      {/* Continue Button */}
+      <View style={styles.buttonContainer}>
+        <Button title="Continue" onPress={handleContinue} size="large" style={styles.continueButton} />
+      </View>
     </ThemedView>
   );
 }
@@ -133,41 +147,62 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: brandColors.gunmetal[50],
   },
-  scrollContent: {
-    flexGrow: 1,
-    paddingTop: 60,
-    paddingBottom: 40,
+  backgroundImagePlaceholder: {
+    height: 180,
+    backgroundColor: brandColors.gunmetal[100],
+    borderRadius: 0,
+  },
+  backgroundImageContainer: {
+    position: "relative",
+    height: 180,
+  },
+  fadeOverlay: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    backgroundColor: brandColors.gunmetal[50],
+  },
+  iconContainer: {
+    position: "absolute",
+    top: 130, // Position to overlap the bottom of the image
+    left: 0,
+    right: 0,
+    alignItems: "center",
+    zIndex: 1,
   },
   header: {
     alignItems: "center",
-    marginBottom: 48,
     paddingHorizontal: 24,
+    paddingTop: 90, // Increased to account for overlapping icon
   },
   icon: {
-    width: 120,
-    height: 120,
-    marginBottom: 24,
-    borderRadius: 24,
+    width: 100,
+    height: 100,
+    borderRadius: 20,
   },
-  appName: {
-    fontSize: 32,
+  welcomeTitle: {
+    fontSize: 34,
     fontWeight: "bold",
     color: brandColors.gunmetal[950],
-    marginBottom: 8,
+    marginBottom: 16,
     textAlign: "center",
+    lineHeight: 40,
   },
   subtitle: {
     fontSize: 18,
     color: brandColors.gunmetal[600],
     textAlign: "center",
     lineHeight: 24,
+    paddingHorizontal: 20,
+  },
+  flexSpacer: {
+    flex: 1,
   },
   testimonialsSection: {
-    flex: 1,
-    marginBottom: 48,
+    paddingBottom: 32,
   },
   testimonialCarousel: {
-    height: 200,
+    height: 120,
   },
   testimonialSlide: {
     width: screenWidth,
@@ -228,8 +263,8 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   buttonContainer: {
-    paddingTop: 16,
     paddingHorizontal: 24,
+    paddingBottom: 44,
   },
   continueButton: {
     marginBottom: 16,
