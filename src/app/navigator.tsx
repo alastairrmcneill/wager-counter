@@ -1,10 +1,11 @@
+import { OnboardingWizard } from "@/src/components/OnboardingWizard";
 import { WelcomeScreen } from "@/src/components/WelcomeScreen";
 import { useCounterStore, useOnboardingStore } from "@/src/store";
 import React, { useEffect, useState } from "react";
 import CounterScreen from "./counter";
 
 export default function AppNavigator() {
-  const { isCompleted } = useOnboardingStore();
+  const { isCompleted, currentStep } = useOnboardingStore();
   const { counters } = useCounterStore();
   const [isReady, setIsReady] = useState(false);
 
@@ -22,11 +23,16 @@ export default function AppNavigator() {
     return null;
   }
 
-  // Show welcome screen if onboarding not completed or no counters exist
-  if (!isCompleted || counters.length === 0) {
-    return <WelcomeScreen />;
+  // Show wizard if user has started onboarding (currentStep > 0)
+  if (currentStep > 0) {
+    return <OnboardingWizard />;
   }
 
   // Show counter screen if onboarding completed and counters exist
-  return <CounterScreen />;
+  if (!isCompleted && counters.length > 0) {
+    return <CounterScreen />;
+  }
+
+  // Show welcome screen by default (fresh app start or no counters)
+  return <WelcomeScreen />;
 }

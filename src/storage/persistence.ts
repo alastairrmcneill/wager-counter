@@ -40,7 +40,7 @@ export const persistActiveCounterId = (counterId: string | null): void => {
 /**
  * Persist onboarding state to MMKV
  */
-export const persistOnboarding = (onboardingState: { isCompleted: boolean; currentStep: number }): void => {
+export const persistOnboarding = (onboardingState: { isCompleted: boolean }): void => {
   setStorageItem(STORAGE_KEYS.ONBOARDING, onboardingState);
 };
 
@@ -56,9 +56,8 @@ export const hydrateStores = async (): Promise<HydrationResult> => {
     const spins = getStorageItem<Spin[]>(STORAGE_KEYS.SPINS, []);
     const sessions = getStorageItem<Session[]>(STORAGE_KEYS.SESSIONS, []);
     const activeCounterId = getStorageItem<string | null>(STORAGE_KEYS.ACTIVE_COUNTER_ID, null);
-    const onboardingState = getStorageItem<{ isCompleted: boolean; currentStep: number }>(STORAGE_KEYS.ONBOARDING, {
+    const onboardingState = getStorageItem<{ isCompleted: boolean }>(STORAGE_KEYS.ONBOARDING, {
       isCompleted: false,
-      currentStep: 0,
     });
 
     // Set state directly (bypass actions to avoid triggers)
@@ -75,7 +74,8 @@ export const hydrateStores = async (): Promise<HydrationResult> => {
       sessions,
     });
 
-    useOnboardingStore.setState(onboardingState);
+    // Use the hydrate method to set only isCompleted, currentStep always starts at 0
+    useOnboardingStore.getState().hydrate(onboardingState);
 
     const duration = Date.now() - startTime;
 
@@ -105,6 +105,7 @@ export const setupPersistence = (): (() => void) => {
   // Subscribe to counter store changes
   const unsubCounters = useCounterStore.subscribe((state) => {
     persistCounters(state.counters);
+    persistActiveCounterId(state.activeCounterId);
   });
 
   // Subscribe to spin store changes
@@ -119,7 +120,7 @@ export const setupPersistence = (): (() => void) => {
 
   // Subscribe to onboarding store changes
   const unsubOnboarding = useOnboardingStore.subscribe((state) => {
-    persistOnboarding({ isCompleted: state.isCompleted, currentStep: state.currentStep });
+    persistOnboarding({ isCompleted: state.isCompleted });
   });
 
   // Return cleanup function

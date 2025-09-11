@@ -45,8 +45,6 @@ export function WelcomeScreen() {
 
   const handleContinue = () => {
     setCurrentStep(1);
-    // TODO: Navigate to first wizard step when created
-    console.log("Continuing to wizard step 1");
   };
 
   // Auto-scroll timer

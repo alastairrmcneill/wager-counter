@@ -187,7 +187,7 @@ Create panel with quick chip options and a numeric input.
 
 ## 🧭 EPIC 4 – Onboarding Wizard
 
-### Story 4.1 – Create Welcome Screen
+### Story 4.1 – ✅ Done Create Welcome Screen
 
 **Description:**
 
@@ -200,7 +200,7 @@ First screen shown on fresh install with a “Continue” action.
 
 ---
 
-### Story 4.2 – Build 3-Step Wizard (Name → Target → Stake)
+### Story 4.2 – ✅ Done Build 3-Step Wizard (Name → Target → Stake)
 
 **Description:**
 
