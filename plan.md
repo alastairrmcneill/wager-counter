@@ -216,18 +216,6 @@ Allow users to configure their first counter in a guided flow.
 
 ---
 
-### Story 4.3 – Emit Analytics During Onboarding
-
-**Description:**
-
-Track user progress through onboarding.
-
-**Acceptance Criteria:**
-
-- Events fired: `onboarding_start`, `page1`, `page2`, `page3`, `complete`, `counter_create`.
-
----
-
 ### Story 4.4 – Complete onboarding
 
 **Description:**
@@ -288,19 +276,7 @@ Allow tapping on a counter in the list to open its detail screen.
 
 ---
 
-### Story 5.4 – Emit Analytics on Counter Creation
-
-**Description:**
-
-Track new counter creations.
-
-**Acceptance Criteria:**
-
-- `counter_create` event fired on each successful create.
-
----
-
-### Story 5.5 – Trigger Paywall After Each Counter Creation
+### Story 5.4 – Trigger Paywall After Each Counter Creation
 
 **Description:**
 
@@ -330,18 +306,6 @@ Display summary dialog when a counter hits or exceeds its target.
 - Includes total spins, elapsed time, avg spins/min.
 - “OK” dismisses the dialog.
 - Counter remains active (not archived).
-
----
-
-### Story 6.2 – Track Completion in Analytics
-
-**Description:**
-
-Emit analytics when a counter completes.
-
-**Acceptance Criteria:**
-
-- Add `completed: true` to `increment_tap` event when target is reached.
 
 ---
 
@@ -387,7 +351,6 @@ Enable purchasing and restoring of `pro_lifetime`.
 
 - Purchase succeeds and unlocks entitlement.
 - Restore button reinstates access if previously purchased.
-- Analytics: `purchase_start`, `purchase_success`, `purchase_fail`.
 
 ---
 
@@ -401,19 +364,6 @@ Restrict CSV/PDF export to Pro users.
 
 - Export buttons disabled or hidden for free users.
 - Entitlement check used before allowing export.
-
----
-
-### Story 7.5 – Emit Analytics on Paywall Views
-
-**Description:**
-
-Track paywall views and actions.
-
-**Acceptance Criteria:**
-
-- `paywall_view` fired each time it’s shown.
-- Include counter ID if applicable.
 
 ---
 
@@ -478,11 +428,23 @@ Create an abstraction layer over analytics providers.
 **Acceptance Criteria:**
 
 - Unified `trackEvent(name, payload)` function.
-- Backend can be replaced with Segment, Amplitude, or custom.
 
 ---
 
-### Story 9.2 – Emit Core Events
+### Story 9.2 – Connect Analytics Client to Mixpanel
+
+**Description:**
+
+Connect the analytics client created before to mixpanel, while keeping the project token out of the github repo
+
+**Acceptance Criteria:**
+
+- Analytics client logs events to mixpanel
+- Mixpanel project token is not in source control
+
+---
+
+### Story 9.3 – Emit Core Events
 
 **Description:**
 
@@ -503,7 +465,7 @@ Track key app interactions as defined in the spec.
 
 ---
 
-### Story 9.3 – Add Context to Analytics Payloads
+### Story 9.4 – Add Context to Analytics Payloads
 
 **Description:**
 
@@ -571,3 +533,47 @@ Ensure key components reflect final UI polish.
 - Buttons: correct radius, padding, sizing.
 - Progress bar: rounded ends, mint fill.
 - Dynamic type support verified.
+
+---
+
+## 📈 EPIC 11 – User analytics
+
+---
+
+### Story 10.1 – Setup app to use mixpanel for user analytics
+
+**Description:**
+
+Connect app to mixpanel project
+
+**Acceptance Criteria:**
+
+- App can send events to mixpanel
+- Project token is not stored in git repo
+
+---
+
+### Story 10.2 – Create analytics service
+
+**Description:**
+
+Implement a scalable service for handling analytics that allows for user defined events and injects some custom properties to every event.
+
+**Acceptance Criteria:**
+
+- Service that can be used across the app for logging events.
+- Inject user uuid into each event
+
+---
+
+### Story 10.3 – Add analytics logging thorughout the app
+
+**Description:**
+
+Add events to the onboarding flow to track progress and completion, to the home screen for when a user creates a new counter, in the counter to track spins and undos and spin value changes.
+
+**Acceptance Criteria:**
+
+- Events logged throughout the app
+
+---
