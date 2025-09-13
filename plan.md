@@ -234,7 +234,7 @@ Only after user has successfully created their first counter will the onbaording
 
 ---
 
-### Story 5.1 – Build Home Screen with Counter List
+### Story 5.1 – ✅ Done Build Home Screen with Counter List
 
 **Description:**
 
@@ -248,7 +248,7 @@ Show a scrollable vertical list of all existing counters with basic progress inf
 
 ---
 
-### Story 5.2 – Single-Screen Counter Creator
+### Story 5.2 – ✅ Done Single-Screen Counter Creator
 
 **Description:**
 
@@ -263,7 +263,7 @@ Allow users to create new counters after onboarding.
 
 ---
 
-### Story 5.3 – List Item Navigation to Counter Detail
+### Story 5.3 – ✅ Done List Item Navigation to Counter Detail
 
 **Description:**
 

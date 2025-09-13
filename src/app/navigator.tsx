@@ -1,6 +1,7 @@
 import { HomeScreen } from "@/src/components/HomeScreen";
 import { WelcomeScreen } from "@/src/components/WelcomeScreen";
 import { useCounterStore, useOnboardingStore } from "@/src/store";
+import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import CounterScreen from "./counter";
 
@@ -23,8 +24,7 @@ export default function AppNavigator() {
   };
 
   const handleCreateCounter = () => {
-    // For now, this will be implemented in story 5.2
-    console.log("Create counter functionality coming in story 5.2");
+    router.push("/create-counter");
   };
 
   if (!isReady) {
