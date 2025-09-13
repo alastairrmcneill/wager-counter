@@ -55,15 +55,15 @@ export const hydrateStores = async (): Promise<HydrationResult> => {
     const counters = getStorageItem<Counter[]>(STORAGE_KEYS.COUNTERS, []);
     const spins = getStorageItem<Spin[]>(STORAGE_KEYS.SPINS, []);
     const sessions = getStorageItem<Session[]>(STORAGE_KEYS.SESSIONS, []);
-    const activeCounterId = getStorageItem<string | null>(STORAGE_KEYS.ACTIVE_COUNTER_ID, null);
     const onboardingState = getStorageItem<{ isCompleted: boolean }>(STORAGE_KEYS.ONBOARDING, {
       isCompleted: false,
     });
 
     // Set state directly (bypass actions to avoid triggers)
+    // Note: activeCounterId is intentionally NOT restored - always starts as null
     useCounterStore.setState({
       counters,
-      activeCounterId,
+      activeCounterId: null, // Always start with no active counter
     });
 
     useSpinStore.setState({
@@ -105,7 +105,7 @@ export const setupPersistence = (): (() => void) => {
   // Subscribe to counter store changes
   const unsubCounters = useCounterStore.subscribe((state) => {
     persistCounters(state.counters);
-    persistActiveCounterId(state.activeCounterId);
+    // Note: activeCounterId is intentionally NOT persisted
   });
 
   // Subscribe to spin store changes

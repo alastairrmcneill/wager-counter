@@ -1,12 +1,12 @@
-import { OnboardingWizard } from "@/src/components/OnboardingWizard";
+import { HomeScreen } from "@/src/components/HomeScreen";
 import { WelcomeScreen } from "@/src/components/WelcomeScreen";
 import { useCounterStore, useOnboardingStore } from "@/src/store";
 import React, { useEffect, useState } from "react";
 import CounterScreen from "./counter";
 
 export default function AppNavigator() {
-  const { isCompleted, currentStep } = useOnboardingStore();
-  const { counters, activeCounterId } = useCounterStore();
+  const { isCompleted } = useOnboardingStore();
+  const { counters, activeCounterId, setActiveCounter } = useCounterStore();
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -18,21 +18,31 @@ export default function AppNavigator() {
     return () => clearTimeout(timer);
   }, []);
 
+  const handleCounterPress = (counter: any) => {
+    setActiveCounter(counter.id);
+  };
+
+  const handleCreateCounter = () => {
+    // For now, this will be implemented in story 5.2
+    console.log("Create counter functionality coming in story 5.2");
+  };
+
   if (!isReady) {
     // Return a loading state or null while stores hydrate
     return null;
   }
 
-  // Show wizard if user has started onboarding (currentStep > 0)
-  if (currentStep > 0) {
-    return <OnboardingWizard />;
-  }
-
-  // Show counter screen if onboarding completed and there's an active counter
-  if (isCompleted && activeCounterId && counters.length > 0) {
+  // Show counter screen only if user has actively selected a counter in this session
+  if (isCompleted && activeCounterId && counters.find((c) => c.id === activeCounterId)) {
     return <CounterScreen />;
   }
 
-  // Show welcome screen by default (fresh app start or no counters)
+  // Main flow: Check if onboarding is completed
+  if (isCompleted) {
+    // Onboarding completed → Always show home screen (list of counters) on app open
+    return <HomeScreen counters={counters} onCounterPress={handleCounterPress} onCreateCounter={handleCreateCounter} />;
+  }
+
+  // Onboarding not completed → Show welcome screen
   return <WelcomeScreen />;
 }

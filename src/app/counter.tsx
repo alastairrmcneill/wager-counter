@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
 
 import { CounterControls } from "@/src/components/CounterControls";
+import { CounterHeader } from "@/src/components/CounterHeader";
 import { CounterStats } from "@/src/components/CounterStats";
-import { Header } from "@/src/components/Header";
 import { SettingsDialog } from "@/src/components/SettingsDialog";
 import { ThemedView } from "@/src/components/ThemedView";
 import { useCounterScreen } from "@/src/hooks/useCounterScreen";
+import { useCounterStore } from "@/src/store";
 
 export default function CounterScreen() {
   const [showSettingsDialog, setShowSettingsDialog] = useState(false);
+  const { setActiveCounter } = useCounterStore();
   const { counter, spins, sessionStats, canUndoSpin, handleIncrement, handleUndo, handleStakeChange } =
     useCounterScreen();
 
@@ -21,11 +23,20 @@ export default function CounterScreen() {
     setShowSettingsDialog(false);
   };
 
+  const handleBackPress = () => {
+    setActiveCounter(null); // This will navigate back to the home screen
+  };
+
   return (
     <ThemedView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={false} />
 
-      <Header title={counter?.name || "Test Counter"} onSettingsPress={handleOpenSettings} showBackButton={false} />
+      <CounterHeader
+        title={counter?.name || "Test Counter"}
+        onBackPress={handleBackPress}
+        onSettingsPress={handleOpenSettings}
+        showBackButton={true}
+      />
 
       {counter && (
         <View style={styles.content}>
