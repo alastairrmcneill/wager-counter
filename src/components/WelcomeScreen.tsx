@@ -1,5 +1,5 @@
 import { SymbolView } from "expo-symbols";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { Dimensions, FlatList, Image, StyleSheet, Text, View } from "react-native";
 
 import { ThemedView } from "@/src/components/ThemedView";
@@ -39,33 +39,11 @@ const testimonials: Testimonial[] = [
 
 export function WelcomeScreen() {
   const { setCurrentStep } = useOnboardingStore();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
 
   const handleContinue = () => {
     setCurrentStep(1);
   };
-
-  // Auto-scroll timer
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % testimonials.length;
-        try {
-          flatListRef.current?.scrollToIndex({
-            index: nextIndex,
-            animated: true,
-          });
-        } catch (error) {
-          console.warn("Error scrolling to index:", error);
-        }
-        return nextIndex;
-      });
-    }, 5000); // 5 seconds
-
-    return () => clearInterval(timer);
-  }, []);
 
   const renderTestimonial = ({ item }: { item: Testimonial }) => (
     <View style={styles.testimonialSlide}>

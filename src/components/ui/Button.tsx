@@ -1,30 +1,7 @@
 import React from "react";
 import { ActivityIndicator, StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from "react-native";
 
-// Brand colors from our plan
-const colors = {
-  gunmetal: {
-    50: "#f4f6f7",
-    100: "#e3e8eb",
-    200: "#c9d3d9",
-    300: "#a3b5be",
-    400: "#76909d",
-    500: "#5a7481",
-    600: "#4d626e",
-    700: "#43525c",
-    800: "#3c464e",
-    900: "#343c43",
-    950: "#1f252a",
-  },
-  mint: {
-    400: "#2dd4bf",
-    500: "#14b8a6",
-  },
-  coral: {
-    500: "#ef4444",
-    600: "#dc2626",
-  },
-};
+import { brandColors } from "@/src/constants/DesignSystem";
 
 interface ButtonProps {
   title: string;
@@ -135,19 +112,19 @@ const styles = StyleSheet.create({
   },
   // Variants
   primary: {
-    backgroundColor: colors.mint[400],
+    backgroundColor: brandColors.mint[400],
   },
   secondary: {
     backgroundColor: "transparent",
     borderWidth: 1,
-    borderColor: colors.gunmetal[300],
+    borderColor: brandColors.gunmetal[300],
   },
   danger: {
-    backgroundColor: colors.coral[500],
+    backgroundColor: brandColors.coral[500],
   },
   disabled: {
-    backgroundColor: colors.gunmetal[200],
-    borderColor: colors.gunmetal[200],
+    backgroundColor: brandColors.gunmetal[200],
+    borderColor: brandColors.gunmetal[200],
   },
   // Text styles
   text: {
@@ -167,12 +144,12 @@ const styles = StyleSheet.create({
     color: "#ffffff",
   },
   secondaryText: {
-    color: colors.gunmetal[700],
+    color: brandColors.gunmetal[700],
   },
   dangerText: {
     color: "#ffffff",
   },
   disabledText: {
-    color: colors.gunmetal[400],
+    color: brandColors.gunmetal[400],
   },
 });

@@ -185,7 +185,7 @@ Create panel with quick chip options and a numeric input.
 
 ---
 
-## 🧭 EPIC 4 – Onboarding Wizard
+## 🧭 EPIC 4 – ✅ Done Onboarding Wizard
 
 ### Story 4.1 – ✅ Done Create Welcome Screen
 
@@ -216,17 +216,17 @@ Allow users to configure their first counter in a guided flow.
 
 ---
 
-### Story 4.4 – Complete onboarding
+### Story 4.4 – ✅ Done Complete onboarding
 
 **Description:**
 
-Only after user has successfully created their first counter will the onbaording be complete. On subsequenet app opens if the onboarding hasn't been completed the start again, if the onboarding has been completed then lets go straight to the counter screen
+Only after user has successfully created their first counter will the onbaording be complete. On subsequenet app opens if the onboarding hasn't been completed then it should start again, if the onboarding has been completed then lets go straight to the counter screen with the counter that was created.
 
 **Acceptance Criteria:**
 
 - Onboarding marked as completed after counter created
 - Opening app before onboarding has been completed takes you to welcome page
-- Opening app after onboarding has been completed takes you to counter screen
+- Opening app after onboarding has been completed takes you to counter screen of the counter that was created in the onboarding.
 
 ---
 

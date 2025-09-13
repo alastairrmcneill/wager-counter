@@ -1,30 +1,7 @@
 import React from "react";
 import { Animated, StyleSheet, View, ViewStyle } from "react-native";
 
-// Brand colors from our plan
-const colors = {
-  gunmetal: {
-    50: "#f4f6f7",
-    100: "#e3e8eb",
-    200: "#c9d3d9",
-    300: "#a3b5be",
-    400: "#76909d",
-    500: "#5a7481",
-    600: "#4d626e",
-    700: "#43525c",
-    800: "#3c464e",
-    900: "#343c43",
-    950: "#1f252a",
-  },
-  mint: {
-    400: "#2dd4bf",
-    500: "#14b8a6",
-  },
-  coral: {
-    500: "#ef4444",
-    600: "#dc2626",
-  },
-};
+import { brandColors } from "@/src/constants/DesignSystem";
 
 interface ProgressBarProps {
   progress: number; // 0 to 1
@@ -96,7 +73,7 @@ export function ProgressBar({
 
 const styles = StyleSheet.create({
   track: {
-    backgroundColor: colors.gunmetal[100],
+    backgroundColor: brandColors.gunmetal[100],
     borderRadius: 999,
     overflow: "hidden",
   },
@@ -125,12 +102,12 @@ const styles = StyleSheet.create({
   },
   // Fill variants
   primaryFill: {
-    backgroundColor: colors.mint[400],
+    backgroundColor: brandColors.mint[400],
   },
   successFill: {
-    backgroundColor: colors.mint[500],
+    backgroundColor: brandColors.mint[500],
   },
   dangerFill: {
-    backgroundColor: colors.coral[500],
+    backgroundColor: brandColors.coral[500],
   },
 });
