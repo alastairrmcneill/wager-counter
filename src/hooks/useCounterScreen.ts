@@ -6,10 +6,14 @@ import { useCounterIncrement } from "./useCounterIncrement";
 import { useCounterUndo } from "./useCounterUndo";
 import { useStakeChange } from "./useStakeChange";
 
+interface UseCounterScreenOptions {
+  onTargetReached?: (counterId: string, previousWagered: number) => void;
+}
+
 /**
  * Custom hook to manage counter screen logic and state
  */
-export function useCounterScreen() {
+export function useCounterScreen(options?: UseCounterScreenOptions) {
   const { counters, addCounter, getCounter, activeCounterId, setActiveCounter } = useCounterStore();
   const { getSpinsForCounter } = useSpinStore();
   const { startSession, getSessionStats } = useSessionStore();
@@ -60,7 +64,7 @@ export function useCounterScreen() {
       Alert.alert("Error", "No counter available");
       return;
     }
-    await incrementCounter(currentCounterId);
+    await incrementCounter(currentCounterId, options?.onTargetReached);
   };
 
   const handleUndo = async () => {

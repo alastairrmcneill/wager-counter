@@ -16,7 +16,7 @@ export function useCounterIncrement() {
   const { isDebounced } = useDebounce(120);
 
   const incrementCounter = useCallback(
-    async (counterId: string) => {
+    async (counterId: string, onTargetReached?: (counterId: string, previousWagered: number) => void) => {
       // Debounce check
       if (isDebounced()) {
         return;
@@ -41,11 +41,19 @@ export function useCounterIncrement() {
       // Add spin to store
       addSpin(spin);
 
+      // Store previous wagered amount for target checking
+      const previousWageredPence = counter.wageredPence;
+
       // Update counter's wagered amount
       const newWageredPence = counter.wageredPence + counter.currentStakePence;
       updateCounter(counterId, {
         wageredPence: newWageredPence,
       });
+
+      // Check if target was reached and call callback
+      if (onTargetReached) {
+        onTargetReached(counterId, previousWageredPence);
+      }
 
       // Update session activity
       updateSessionActivity(counterId);

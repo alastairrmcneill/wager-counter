@@ -5,15 +5,20 @@ import { CounterControls } from "@/src/components/CounterControls";
 import { CounterHeader } from "@/src/components/CounterHeader";
 import { CounterStats } from "@/src/components/CounterStats";
 import { SettingsDialog } from "@/src/components/SettingsDialog";
+import { TargetCompletionDialog } from "@/src/components/TargetCompletionDialog";
 import { ThemedView } from "@/src/components/ThemedView";
 import { useCounterScreen } from "@/src/hooks/useCounterScreen";
+import { useTargetCompletion } from "@/src/hooks/useTargetCompletion";
 import { useCounterStore } from "@/src/store";
 
 export default function CounterScreen() {
   const [showSettingsDialog, setShowSettingsDialog] = useState(false);
   const { setActiveCounter } = useCounterStore();
+  const { showTargetDialog, checkTargetCompletion, closeTargetDialog, getCompletedCounter } = useTargetCompletion();
   const { counter, spins, sessionStats, canUndoSpin, handleIncrement, handleUndo, handleStakeChange } =
-    useCounterScreen();
+    useCounterScreen({
+      onTargetReached: checkTargetCompletion,
+    });
 
   const handleOpenSettings = () => {
     setShowSettingsDialog(true);
@@ -55,6 +60,18 @@ export default function CounterScreen() {
           onClose={handleCloseSettings}
           currentStakePence={counter.currentStakePence}
           onStakeChange={handleStakeChange}
+        />
+      )}
+
+      {/* Target Completion Dialog */}
+      {counter && showTargetDialog && (
+        <TargetCompletionDialog
+          visible={showTargetDialog}
+          onClose={closeTargetDialog}
+          counter={getCompletedCounter() || counter}
+          totalSpins={spins.length}
+          elapsedMs={sessionStats.elapsedMs}
+          avgSpinsPerMin={sessionStats.avgSpinsPerMin}
         />
       )}
     </ThemedView>

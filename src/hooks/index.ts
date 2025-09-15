@@ -5,4 +5,5 @@ export { useCounterUndo } from "./useCounterUndo";
 export { useDebounce } from "./useDebounce";
 export { useSettingsDialog } from "./useSettingsDialog";
 export { useStakeChange } from "./useStakeChange";
+export { useTargetCompletion } from "./useTargetCompletion";
 export { useThemeColor } from "./useThemeColor";
