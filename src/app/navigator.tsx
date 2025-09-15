@@ -7,7 +7,7 @@ import CounterScreen from "./counter";
 
 export default function AppNavigator() {
   const { isCompleted } = useOnboardingStore();
-  const { counters, activeCounterId, setActiveCounter } = useCounterStore();
+  const { counters, activeCounterId, setActiveCounter, deleteCounter } = useCounterStore();
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -27,6 +27,10 @@ export default function AppNavigator() {
     router.push("/create-counter");
   };
 
+  const handleDeleteCounter = (counter: any) => {
+    deleteCounter(counter.id);
+  };
+
   if (!isReady) {
     // Return a loading state or null while stores hydrate
     return null;
@@ -40,7 +44,14 @@ export default function AppNavigator() {
   // Main flow: Check if onboarding is completed
   if (isCompleted) {
     // Onboarding completed → Always show home screen (list of counters) on app open
-    return <HomeScreen counters={counters} onCounterPress={handleCounterPress} onCreateCounter={handleCreateCounter} />;
+    return (
+      <HomeScreen
+        counters={counters}
+        onCounterPress={handleCounterPress}
+        onCreateCounter={handleCreateCounter}
+        onDeleteCounter={handleDeleteCounter}
+      />
+    );
   }
 
   // Onboarding not completed → Show welcome screen

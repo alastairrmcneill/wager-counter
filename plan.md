@@ -230,7 +230,7 @@ Only after user has successfully created their first counter will the onbaording
 
 ---
 
-## 🏠 EPIC 5 – Home Screen & Subsequent Counter Creation
+## 🏠 EPIC 5 – ✅ Done Home Screen & Subsequent Counter Creation
 
 ---
 
@@ -273,20 +273,6 @@ Allow tapping on a counter in the list to open its detail screen.
 
 - Tapping item opens corresponding counter screen.
 - Screen shows correct data for selected counter.
-
----
-
-### Story 5.4 – Trigger Paywall After Each Counter Creation
-
-**Description:**
-
-Show the paywall after a new counter is created.
-
-**Acceptance Criteria:**
-
-- After create, paywall shows.
-- If under limit (<=2), show upsell with “Continue free”.
-- If over limit (>2), block until purchase or restore.
 
 ---
 
@@ -354,16 +340,17 @@ Enable purchasing and restoring of `pro_lifetime`.
 
 ---
 
-### Story 7.4 – Gate Exports Behind Entitlement
+### Story 7.4 – Trigger Paywall After Each Counter Creation
 
 **Description:**
 
-Restrict CSV/PDF export to Pro users.
+Show the paywall after a new counter is created.
 
 **Acceptance Criteria:**
 
-- Export buttons disabled or hidden for free users.
-- Entitlement check used before allowing export.
+- After create, paywall shows.
+- If under limit (<=2), show upsell with “Continue free”.
+- If over limit (>2), block until purchase or restore.
 
 ---
 
@@ -412,6 +399,19 @@ Generate a branded PDF report for a single counter.
 - Mini history table: first + last N spins with counts.
 - Styled brand header and progress bar.
 - Fires `export_pdf`.
+
+---
+
+### Story 8.4 – Gate Exports Behind Entitlement
+
+**Description:**
+
+Restrict CSV/PDF export to Pro users.
+
+**Acceptance Criteria:**
+
+- Export buttons disabled or hidden for free users.
+- Entitlement check used before allowing export.
 
 ---
 

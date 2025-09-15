@@ -20,14 +20,17 @@ interface HomeScreenProps {
   counters: Counter[];
   onCounterPress: (counter: Counter) => void;
   onCreateCounter: () => void;
+  onDeleteCounter: (counter: Counter) => void;
 }
 
 interface ListItemProps {
   item: Counter;
 }
 
-export function HomeScreen({ counters, onCounterPress, onCreateCounter }: HomeScreenProps) {
-  const renderCounter = ({ item }: ListItemProps) => <CounterListItem counter={item} onPress={onCounterPress} />;
+export function HomeScreen({ counters, onCounterPress, onCreateCounter, onDeleteCounter }: HomeScreenProps) {
+  const renderCounter = ({ item }: ListItemProps) => (
+    <CounterListItem counter={item} onPress={onCounterPress} onDelete={onDeleteCounter} />
+  );
 
   const keyExtractor = (item: Counter) => item.id;
 

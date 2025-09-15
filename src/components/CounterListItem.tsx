@@ -1,8 +1,11 @@
 import { brandColors } from "@/src/constants/DesignSystem";
 import { Counter } from "@/src/types/domain";
 import { formatGBP } from "@/src/utils/currency";
-import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import * as Haptics from "expo-haptics";
+import React, { useCallback, useRef } from "react";
+import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Swipeable } from "react-native-gesture-handler";
+import Toast from "react-native-toast-message";
 import { ThemedText } from "./ThemedText";
 import { ProgressBar } from "./ui/ProgressBar";
 
@@ -15,41 +18,94 @@ const spacing = {
   xl: 32,
 };
 
+function DeleteAction({ onPress, counterName }: { onPress: () => void; counterName: string }) {
+  return (
+    <View style={styles.deleteContainer}>
+      <Pressable
+        onPress={onPress}
+        style={({ pressed }) => [styles.deleteAction, pressed && { opacity: 0.8 }]}
+        accessibilityRole="button"
+        accessibilityLabel={`Delete ${counterName}`}
+      >
+        <ThemedText style={styles.deleteLabel}>Delete</ThemedText>
+      </Pressable>
+    </View>
+  );
+}
+
 interface CounterListItemProps {
   counter: Counter;
   onPress: (counter: Counter) => void;
+  onDelete: (counter: Counter) => void;
 }
 
-export function CounterListItem({ counter, onPress }: CounterListItemProps) {
+export function CounterListItem({ counter, onPress, onDelete }: CounterListItemProps) {
+  const swipeableRef = useRef<Swipeable>(null);
   const progress = counter.targetPence > 0 ? counter.wageredPence / counter.targetPence : 0;
   const progressPercentage = Math.min(progress * 100, 100);
 
+  const handleDelete = useCallback(async () => {
+    try {
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } catch {}
+
+    // Close the swipeable first
+    swipeableRef.current?.close();
+
+    // Delete the counter
+    onDelete(counter);
+
+    // Show toast message
+    Toast.show({
+      type: "error",
+      text1: "Counter deleted",
+      text2: `"${counter.name}" has been deleted`,
+      visibilityTime: 3000,
+      position: "bottom",
+      bottomOffset: 40,
+      autoHide: true,
+    });
+  }, [counter, onDelete]);
+
+  const renderRightActions = () => {
+    return <DeleteAction onPress={handleDelete} counterName={counter.name} />;
+  };
+
   return (
-    <TouchableOpacity style={styles.container} onPress={() => onPress(counter)} activeOpacity={0.7}>
-      <View style={styles.content}>
-        <View style={styles.header}>
-          <ThemedText style={styles.counterName} numberOfLines={1}>
-            {counter.name}
-          </ThemedText>
-          <ThemedText style={styles.progressText}>{progressPercentage.toFixed(0)}%</ThemedText>
-        </View>
+    <Swipeable
+      ref={swipeableRef}
+      friction={2}
+      overshootRight={false}
+      rightThreshold={72}
+      renderRightActions={renderRightActions}
+      enableTrackpadTwoFingerGesture
+    >
+      <TouchableOpacity style={styles.container} onPress={() => onPress(counter)} activeOpacity={0.7}>
+        <View style={styles.content}>
+          <View style={styles.header}>
+            <ThemedText style={styles.counterName} numberOfLines={1}>
+              {counter.name}
+            </ThemedText>
+            <ThemedText style={styles.progressText}>{progressPercentage.toFixed(0)}%</ThemedText>
+          </View>
 
-        <View style={styles.amountContainer}>
-          <ThemedText style={styles.amountText}>
-            {formatGBP(counter.wageredPence)} / {formatGBP(counter.targetPence)}
-          </ThemedText>
-        </View>
+          <View style={styles.amountContainer}>
+            <ThemedText style={styles.amountText}>
+              {formatGBP(counter.wageredPence)} / {formatGBP(counter.targetPence)}
+            </ThemedText>
+          </View>
 
-        <View style={styles.progressContainer}>
-          <ProgressBar
-            progress={progress}
-            variant={progress >= 1 ? "success" : "primary"}
-            size="medium"
-            style={styles.progressBar}
-          />
+          <View style={styles.progressContainer}>
+            <ProgressBar
+              progress={progress}
+              variant={progress >= 1 ? "success" : "primary"}
+              size="medium"
+              style={styles.progressBar}
+            />
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </Swipeable>
   );
 }
 
@@ -99,5 +155,23 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: 8,
+  },
+  deleteContainer: {
+    width: 88,
+    marginVertical: spacing.xs,
+    marginRight: spacing.md,
+  },
+  deleteAction: {
+    flex: 1,
+    backgroundColor: "#ff3b30",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 12,
+    minHeight: 80, // Approximate height to match counter content
+  },
+  deleteLabel: {
+    color: "white",
+    fontSize: 14,
+    fontWeight: "700",
   },
 });
