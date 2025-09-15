@@ -276,11 +276,11 @@ Allow tapping on a counter in the list to open its detail screen.
 
 ---
 
-## ✅ EPIC 6 – Completion UX
+## ✅ EPIC 6 – ✅ Done Completion UX
 
 ---
 
-### Story 6.1 – Show Completed Dialog on Target Reached
+### Story 6.1 – ✅ Done Show Completed Dialog on Target Reached
 
 **Description:**
 
