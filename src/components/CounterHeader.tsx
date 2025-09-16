@@ -8,10 +8,17 @@ interface CounterHeaderProps {
   title: string;
   onBackPress?: () => void;
   onSettingsPress?: () => void;
+  onExportPress?: () => void;
   showBackButton?: boolean;
 }
 
-export function CounterHeader({ title, onBackPress, onSettingsPress, showBackButton = true }: CounterHeaderProps) {
+export function CounterHeader({
+  title,
+  onBackPress,
+  onSettingsPress,
+  onExportPress,
+  showBackButton = true,
+}: CounterHeaderProps) {
   return (
     <View style={styles.header}>
       <TouchableOpacity style={styles.headerButton} onPress={onBackPress} disabled={!showBackButton}>
@@ -20,9 +27,16 @@ export function CounterHeader({ title, onBackPress, onSettingsPress, showBackBut
 
       <ThemedText style={styles.headerTitle}>{title}</ThemedText>
 
-      <TouchableOpacity style={styles.headerButton} onPress={onSettingsPress}>
-        <FontAwesome5 name="coins" size={22} color="#687076" />
-      </TouchableOpacity>
+      <View style={styles.headerActions}>
+        {onExportPress && (
+          <TouchableOpacity style={styles.headerButton} onPress={onExportPress}>
+            <FontAwesome5 name="file-export" size={20} color="#687076" />
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity style={styles.headerButton} onPress={onSettingsPress}>
+          <FontAwesome5 name="coins" size={22} color="#687076" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -40,6 +54,10 @@ const styles = StyleSheet.create({
     height: 44,
     alignItems: "center",
     justifyContent: "center",
+  },
+  headerActions: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   headerIcon: {
     fontSize: 20,

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StatusBar, StyleSheet, View } from "react-native";
+import { Alert, StatusBar, StyleSheet, View } from "react-native";
 
 import { CounterControls } from "@/src/components/CounterControls";
 import { CounterHeader } from "@/src/components/CounterHeader";
@@ -9,6 +9,7 @@ import { TargetCompletionDialog } from "@/src/components/TargetCompletionDialog"
 import { ThemedView } from "@/src/components/ThemedView";
 import { useCounterScreen } from "@/src/hooks/useCounterScreen";
 import { useTargetCompletion } from "@/src/hooks/useTargetCompletion";
+import { AnalyticsService, ExportService } from "@/src/services";
 import { useCounterStore } from "@/src/store";
 
 export default function CounterScreen() {
@@ -32,6 +33,21 @@ export default function CounterScreen() {
     setActiveCounter(null); // This will navigate back to the home screen
   };
 
+  const handleExportCsv = async () => {
+    if (!counter) return;
+
+    try {
+      await ExportService.exportSpinsCsv(spins, counter.name);
+      AnalyticsService.trackCsvExport(counter.name, spins.length);
+    } catch (error) {
+      Alert.alert(
+        "Export Failed",
+        error instanceof Error ? error.message : "Failed to export CSV file. Please try again.",
+        [{ text: "OK" }]
+      );
+    }
+  };
+
   return (
     <ThemedView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={false} />
@@ -40,6 +56,7 @@ export default function CounterScreen() {
         title={counter?.name || "Test Counter"}
         onBackPress={handleBackPress}
         onSettingsPress={handleOpenSettings}
+        onExportPress={handleExportCsv}
         showBackButton={true}
       />
 

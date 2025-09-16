@@ -299,19 +299,6 @@ Display summary dialog when a counter hits or exceeds its target.
 
 ---
 
-### Story 8.1 - Permissions
-
-**Description**
-
-In the top right of the counter screen add another button for exporting. When this button is clicked it should trigger the request permissions for writing to the documents folder on the device. This should work for both android and ios. If the permissions has already been granted then don't show anything. Update the corresponding plist and masnifest files to allow this.
-
-**Acceptance Criteria**
-
-- Request write permissions for the device on iOS
-- Request write permissions for the device on Android
-
----
-
 ### Story 8.2 – Export Spins as CSV (Per Counter)
 
 **Description:**
@@ -320,6 +307,7 @@ Allow users to export spins for a single counter.
 
 **Acceptance Criteria:**
 
+- Export button in counterheader
 - CSV columns: `spinId,timestamp ISO,stake,cumulativeWagered`.
 - Filename includes counter name.
 - Fires `export_csv`.

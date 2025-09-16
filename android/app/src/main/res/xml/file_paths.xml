@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- Allow sharing from cache dir -->
+  <cache-path name="shared_cache" path="." />
+  <!-- You can also add <files-path> if you store under getFilesDir() -->
+</paths>
