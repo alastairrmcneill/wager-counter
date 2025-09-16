@@ -85,21 +85,9 @@ export function TargetCompletionDialog({
             {/* Actions */}
             <View style={styles.buttonContainer}>
               {spins && onExport && (
-                <Button
-                  title="Export CSV"
-                  onPress={onExport}
-                  variant="secondary"
-                  size="large"
-                  style={styles.button}
-                />
+                <Button title="Export CSV" onPress={onExport} variant="secondary" size="large" style={styles.button} />
               )}
-              <Button
-                title="OK"
-                onPress={onClose}
-                variant="primary"
-                size="large"
-                style={styles.button}
-              />
+              <Button title="OK" onPress={onClose} variant="primary" size="large" style={styles.button} />
             </View>
           </View>
         </TouchableOpacity>

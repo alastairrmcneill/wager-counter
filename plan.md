@@ -299,7 +299,7 @@ Display summary dialog when a counter hits or exceeds its target.
 
 ---
 
-### Story 8.2 – Export Spins as CSV (Per Counter)
+### Story 8.2 – ✅ Done Export Spins as CSV (Per Counter)
 
 **Description:**
 
