@@ -358,17 +358,16 @@ Show the paywall after a new counter is created.
 
 ---
 
-### Story 8.1 – Export Counters as CSV (All)
+### Story 8.1 - Permissions
 
-**Description:**
+**Description**
 
-Allow Pro users to export all counters as a CSV file.
+In the top right of the counter screen add another button for exporting. When this button is clicked it should trigger the request permissions for writing to the documents folder on the device. This should work for both android and ios. If the permissions has already been granted then don't show anything. Update the corresponding plist and masnifest files to allow this.
 
-**Acceptance Criteria:**
+**Acceptance Criteria**
 
-- CSV columns: `id,name,target,totalWagered,progress%,createdAt,updatedAt`.
-- Uses `expo-file-system` and `expo-sharing` to save/share.
-- Fires `export_csv`.
+- Request write permissions for the device on iOS
+- Request write permissions for the device on Android
 
 ---
 
@@ -376,12 +375,12 @@ Allow Pro users to export all counters as a CSV file.
 
 **Description:**
 
-Allow Pro users to export spins for a single counter.
+Allow users to export spins for a single counter.
 
 **Acceptance Criteria:**
 
 - CSV columns: `spinId,timestamp ISO,stake,cumulativeWagered`.
-- Filename includes counter name or ID.
+- Filename includes counter name.
 - Fires `export_csv`.
 
 ---
