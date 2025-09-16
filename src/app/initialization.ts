@@ -1,3 +1,4 @@
+import { analytics } from "../analytics";
 import { hydrateStores, setupPersistence } from "../storage";
 import { validateOnLoad } from "../utils";
 
@@ -14,6 +15,10 @@ interface InitializationResult {
     totalDriftFixed: number;
   };
   persistenceSetup: boolean;
+  analytics: {
+    initialized: boolean;
+    provider: string;
+  };
 }
 
 // Global cleanup function storage
@@ -43,7 +48,21 @@ export const initializeApp = async (): Promise<InitializationResult> => {
   console.log("🔍 Validating counter data...");
   const validationResult = await validateOnLoad();
 
-  // Step 3: Setup persistence subscriptions
+  // Step 3: Initialize analytics
+  console.log("📊 Initializing analytics...");
+  let analyticsProvider = "none";
+  let analyticsInitialized = false;
+
+  try {
+    await analytics.initializeFromEnvironment();
+    analyticsProvider = analytics.getCurrentProvider() || "unknown";
+    analyticsInitialized = analytics.isInitialized();
+    console.log(`✅ Analytics initialized with ${analyticsProvider} provider`);
+  } catch (error) {
+    console.error("❌ Failed to initialize analytics:", error);
+  }
+
+  // Step 4: Setup persistence subscriptions
   console.log("💾 Setting up persistence...");
   persistenceCleanup = setupPersistence();
 
@@ -57,6 +76,10 @@ export const initializeApp = async (): Promise<InitializationResult> => {
       totalDriftFixed: validationResult.totalDriftFixed,
     },
     persistenceSetup: true,
+    analytics: {
+      initialized: analyticsInitialized,
+      provider: analyticsProvider,
+    },
   };
 };
 

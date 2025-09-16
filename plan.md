@@ -334,7 +334,7 @@ Generate a branded PDF report for a single counter.
 
 ---
 
-### Story 9.1 – Analytics Client with Swappable Backends
+### Story 9.1 – ✅ Done Analytics Client with Swappable Backends
 
 **Description:**
 
@@ -346,7 +346,7 @@ Create an abstraction layer over analytics providers.
 
 ---
 
-### Story 9.2 – Connect Analytics Client to Mixpanel
+### Story 9.2 – ✅ Done Connect Analytics Client to Mixpanel
 
 **Description:**
 
