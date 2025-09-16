@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { brandColors } from "../constants/DesignSystem";
-import { Counter } from "../types";
+import { Counter, Spin } from "../types";
 import { formatGBP } from "../utils";
 import { ThemedText } from "./ThemedText";
 import { Button } from "./ui";
@@ -14,6 +14,8 @@ interface TargetCompletionDialogProps {
   totalSpins: number;
   elapsedMs: number;
   avgSpinsPerMin: number;
+  spins?: Spin[];
+  onExport?: () => void;
 }
 
 /**
@@ -41,6 +43,8 @@ export function TargetCompletionDialog({
   totalSpins,
   elapsedMs,
   avgSpinsPerMin,
+  spins,
+  onExport,
 }: TargetCompletionDialogProps) {
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
@@ -78,8 +82,17 @@ export function TargetCompletionDialog({
               </View>
             </View>
 
-            {/* Action */}
+            {/* Actions */}
             <View style={styles.buttonContainer}>
+              {spins && onExport && (
+                <Button
+                  title="Export CSV"
+                  onPress={onExport}
+                  variant="secondary"
+                  size="large"
+                  style={styles.button}
+                />
+              )}
               <Button
                 title="OK"
                 onPress={onClose}
@@ -149,6 +162,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     paddingTop: 8,
+    gap: 12,
   },
   button: {
     width: "100%",

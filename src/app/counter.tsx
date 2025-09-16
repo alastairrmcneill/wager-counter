@@ -89,6 +89,8 @@ export default function CounterScreen() {
           totalSpins={spins.length}
           elapsedMs={sessionStats.elapsedMs}
           avgSpinsPerMin={sessionStats.avgSpinsPerMin}
+          spins={spins}
+          onExport={handleExportCsv}
         />
       )}
     </ThemedView>
