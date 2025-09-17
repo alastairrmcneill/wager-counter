@@ -1,16 +1,27 @@
+import Constants from "expo-constants";
+import { Platform } from "react-native";
 import { analytics } from "./AnalyticsService";
 import { AnalyticsEventPayload } from "./types";
 
 /**
  * Convenience function for tracking events throughout the app
  * This provides a simple way to track events without importing the analytics service directly
+ * Automatically enriches events with platform information and app metadata
  *
  * @param eventName - The name of the event to track
  * @param payload - Optional event properties/payload
  * @returns Promise that resolves when the event is tracked
  */
 export async function trackEvent(eventName: string, payload?: AnalyticsEventPayload): Promise<void> {
-  return analytics.trackEvent(eventName, payload);
+  // Enrich payload with platform information and app metadata
+  const enrichedPayload = {
+    ...payload,
+    platform: Platform.OS as "ios" | "android" | "web",
+    appVersion: Constants.expoConfig?.version || "unknown",
+    isPro: false, // TODO: Implement when premium features are added
+  };
+
+  return analytics.trackEvent(eventName, enrichedPayload);
 }
 
 /**

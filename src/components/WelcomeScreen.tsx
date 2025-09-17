@@ -2,6 +2,8 @@ import { SymbolView } from "expo-symbols";
 import React, { useRef } from "react";
 import { Dimensions, FlatList, Image, StyleSheet, Text, View } from "react-native";
 
+import { trackEvent } from "@/src/analytics";
+import { AnalyticsEvents } from "@/src/analytics/events";
 import { ThemedView } from "@/src/components/ThemedView";
 import { Button } from "@/src/components/ui/Button";
 import { brandColors } from "@/src/constants/DesignSystem";
@@ -42,6 +44,7 @@ export function WelcomeScreen() {
   const flatListRef = useRef<FlatList>(null);
 
   const handleContinue = () => {
+    trackEvent(AnalyticsEvents.ONBOARDING_START);
     setCurrentStep(1);
   };
 

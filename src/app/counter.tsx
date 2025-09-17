@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Alert, StatusBar, StyleSheet, View } from "react-native";
 
+import { trackEvent } from "@/src/analytics";
+import { AnalyticsEvents } from "@/src/analytics/events";
 import { CounterControls } from "@/src/components/CounterControls";
 import { CounterHeader } from "@/src/components/CounterHeader";
 import { CounterStats } from "@/src/components/CounterStats";
@@ -9,7 +11,7 @@ import { TargetCompletionDialog } from "@/src/components/TargetCompletionDialog"
 import { ThemedView } from "@/src/components/ThemedView";
 import { useCounterScreen } from "@/src/hooks/useCounterScreen";
 import { useTargetCompletion } from "@/src/hooks/useTargetCompletion";
-import { AnalyticsService, ExportService } from "@/src/services";
+import { ExportService } from "@/src/services";
 import { useCounterStore } from "@/src/store";
 
 export default function CounterScreen() {
@@ -38,7 +40,15 @@ export default function CounterScreen() {
 
     try {
       await ExportService.exportSpinsCsv(spins, counter.name);
-      AnalyticsService.trackCsvExport(counter.name, spins.length);
+
+      // Track export CSV event
+      trackEvent(AnalyticsEvents.EXPORT_CSV, {
+        counterId: counter.id,
+        exportType: "csv",
+        totalSpins: spins.length,
+        wageredPence: counter.wageredPence,
+        targetPence: counter.targetPence,
+      });
     } catch (error) {
       Alert.alert(
         "Export Failed",

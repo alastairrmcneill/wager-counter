@@ -1,5 +1,7 @@
 import * as Haptics from "expo-haptics";
 import { useCallback } from "react";
+import { trackEvent } from "../analytics";
+import { AnalyticsEvents } from "../analytics/events";
 import { useCounterStore } from "../store/counterStore";
 import { useSessionStore } from "../store/sessionStore";
 import { useSpinStore } from "../store/spinStore";
@@ -48,6 +50,16 @@ export function useCounterIncrement() {
       const newWageredPence = counter.wageredPence + counter.currentStakePence;
       updateCounter(counterId, {
         wageredPence: newWageredPence,
+      });
+
+      // Track increment event
+      const timeSinceStart = now - counter.createdAt;
+      trackEvent(AnalyticsEvents.INCREMENT_TAP, {
+        counterId,
+        stakePence: counter.currentStakePence,
+        targetPence: counter.targetPence,
+        wageredPence: newWageredPence,
+        timeSinceStart,
       });
 
       // Check if target was reached and call callback

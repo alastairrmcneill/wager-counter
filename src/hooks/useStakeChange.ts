@@ -1,4 +1,6 @@
 import { useCallback } from "react";
+import { trackEvent } from "../analytics";
+import { AnalyticsEvents } from "../analytics/events";
 import { useCounterStore } from "../store/counterStore";
 import { validateStake } from "../utils/errors";
 
@@ -24,8 +26,22 @@ export function useStakeChange() {
         return false;
       }
 
+      // Store old stake for analytics
+      const previousStakePence = counter.currentStakePence;
+
       // Update the stake for future spins
       updateStake(counterId, stakePence);
+
+      // Track stake change event
+      const timeSinceStart = Date.now() - counter.createdAt;
+      trackEvent(AnalyticsEvents.STAKE_CHANGE, {
+        counterId,
+        previousStakePence,
+        newStakePence: stakePence,
+        targetPence: counter.targetPence,
+        timeSinceStart,
+      });
+
       return true;
     },
     [updateStake, getCounter]

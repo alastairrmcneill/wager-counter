@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 
+import { trackEvent } from "@/src/analytics";
+import { AnalyticsEvents } from "@/src/analytics/events";
 import { ThemedView } from "@/src/components/ThemedView";
 import { Button } from "@/src/components/ui/Button";
 import { brandColors } from "@/src/constants/DesignSystem";
@@ -48,6 +50,21 @@ export function OnboardingWizard() {
 
   const [currentStep, setCurrentStep] = useState(1);
   const [counterName, setCounterName] = useState("Counter");
+
+  // Track when user reaches each onboarding page
+  useEffect(() => {
+    switch (currentStep) {
+      case 1:
+        trackEvent(AnalyticsEvents.ONBOARDING_PAGE1);
+        break;
+      case 2:
+        trackEvent(AnalyticsEvents.ONBOARDING_PAGE2);
+        break;
+      case 3:
+        trackEvent(AnalyticsEvents.ONBOARDING_PAGE3);
+        break;
+    }
+  }, [currentStep]);
   const [targetAmount, setTargetAmount] = useState("");
   const [stakeAmount, setStakeAmount] = useState("");
 
@@ -91,6 +108,13 @@ export function OnboardingWizard() {
     };
 
     addCounter(newCounter);
+
+    // Track onboarding completion
+    trackEvent(AnalyticsEvents.ONBOARDING_COMPLETE, {
+      counterName: counterName.trim(),
+      targetPence: toPence(targetValue),
+      stakePence: toPence(stakeValue),
+    });
 
     // Get the most recently created counter (should be the last in the array)
     // Use a small timeout to ensure the state has updated

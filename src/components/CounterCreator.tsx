@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { trackEvent } from "@/src/analytics";
+import { AnalyticsEvents } from "@/src/analytics/events";
 import { ThemedView } from "@/src/components/ThemedView";
 import { Button } from "@/src/components/ui/Button";
 import { brandColors } from "@/src/constants/DesignSystem";
@@ -94,6 +96,14 @@ export function CounterCreator({ onCounterCreated, onCancel }: CounterCreatorPro
     };
 
     addCounter(newCounter);
+
+    // Track counter creation
+    trackEvent(AnalyticsEvents.COUNTER_CREATE, {
+      counterName: counterName.trim(),
+      targetPence: toPence(targetValue),
+      stakePence: toPence(stakeValue),
+      spinsNeeded: calculateSpinsNeeded() || 0,
+    });
 
     // Set the new counter as active and navigate to it
     setTimeout(() => {
