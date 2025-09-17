@@ -24,9 +24,13 @@ export const AnalyticsEvents = {
   UNDO_TAP: "undo_tap",
   STAKE_CHANGE: "stake_change",
 
+  // Target completion events
+  TARGET_COMPLETED: "target_completed",
+
   // Export events
   EXPORT_CSV: "export_csv",
   EXPORT_PDF: "export_pdf",
+  EXPORT_CSV_FROM_COMPLETION: "export_csv_from_completion",
 } as const;
 
 /**
@@ -77,6 +81,15 @@ export interface StakeChangeEventPayload extends BaseAnalyticsProperties {
   newStakePence: number;
 }
 
+export interface TargetCompletionEventPayload extends BaseAnalyticsProperties {
+  counterId: string;
+  targetPence: number;
+  finalWageredPence: number;
+  totalSpins: number;
+  sessionDurationMs: number;
+  avgSpinsPerMin: number;
+}
+
 export interface ExportEventPayload extends BaseAnalyticsProperties {
   counterId: string;
   exportType: "csv" | "pdf";
@@ -100,6 +113,7 @@ export type EventPayload =
   | CounterCreateEventPayload
   | CounterInteractionEventPayload
   | StakeChangeEventPayload
+  | TargetCompletionEventPayload
   | ExportEventPayload
   | PurchaseEventPayload
   | BaseAnalyticsProperties;

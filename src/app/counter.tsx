@@ -58,6 +58,29 @@ export default function CounterScreen() {
     }
   };
 
+  const handleExportCsvFromCompletion = async () => {
+    if (!counter) return;
+
+    try {
+      await ExportService.exportSpinsCsv(spins, counter.name);
+
+      // Track export CSV from completion dialog event
+      trackEvent(AnalyticsEvents.EXPORT_CSV_FROM_COMPLETION, {
+        counterId: counter.id,
+        exportType: "csv",
+        totalSpins: spins.length,
+        wageredPence: counter.wageredPence,
+        targetPence: counter.targetPence,
+      });
+    } catch (error) {
+      Alert.alert(
+        "Export Failed",
+        error instanceof Error ? error.message : "Failed to export CSV file. Please try again.",
+        [{ text: "OK" }]
+      );
+    }
+  };
+
   return (
     <ThemedView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={false} />
@@ -100,7 +123,7 @@ export default function CounterScreen() {
           elapsedMs={sessionStats.elapsedMs}
           avgSpinsPerMin={sessionStats.avgSpinsPerMin}
           spins={spins}
-          onExport={handleExportCsv}
+          onExport={handleExportCsvFromCompletion}
         />
       )}
     </ThemedView>
