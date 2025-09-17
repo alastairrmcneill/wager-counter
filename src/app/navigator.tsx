@@ -1,4 +1,5 @@
 import { HomeScreen } from "@/src/components/HomeScreen";
+import { OnboardingWizard } from "@/src/components/OnboardingWizard";
 import { WelcomeScreen } from "@/src/components/WelcomeScreen";
 import { useCounterStore, useOnboardingStore } from "@/src/store";
 import { router } from "expo-router";
@@ -6,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import CounterScreen from "./counter";
 
 export default function AppNavigator() {
-  const { isCompleted } = useOnboardingStore();
+  const { isCompleted, currentStep } = useOnboardingStore();
   const { counters, activeCounterId, setActiveCounter, deleteCounter } = useCounterStore();
   const [isReady, setIsReady] = useState(false);
 
@@ -54,6 +55,10 @@ export default function AppNavigator() {
     );
   }
 
-  // Onboarding not completed → Show welcome screen
+  // Onboarding not completed → Show welcome screen or wizard based on currentStep
+  if (currentStep > 0) {
+    return <OnboardingWizard />;
+  }
+
   return <WelcomeScreen />;
 }
