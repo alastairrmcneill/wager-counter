@@ -1,4 +1,3 @@
-import { trackEvent } from "@/src/analytics";
 import { HomeScreen } from "@/src/components/HomeScreen";
 import { OnboardingWizard } from "@/src/components/OnboardingWizard";
 import { WelcomeScreen } from "@/src/components/WelcomeScreen";
@@ -16,26 +15,10 @@ export default function AppNavigator() {
     // Give stores time to hydrate from persistence
     const timer = setTimeout(() => {
       setIsReady(true);
-
-      // Test analytics tracking when app loads
-      console.log("🧪 Testing analytics from navigator...");
-      trackEvent("navigator_loaded", {
-        isOnboardingCompleted: isCompleted,
-        currentStep,
-        totalCounters: counters.length,
-        hasActiveCounter: !!activeCounterId,
-      });
-
-      // Add a very distinctive test event
-      trackEvent("DEBUGGING_MIXPANEL_CONNECTION_TEST_EVENT_12345", {
-        timestamp: new Date().toISOString(),
-        testMessage: "If you see this event in Mixpanel, the connection is working!",
-        randomNumber: Math.floor(Math.random() * 1000),
-      });
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [isCompleted, currentStep, counters.length, activeCounterId]);
+  }, []);
 
   const handleCounterPress = (counter: any) => {
     setActiveCounter(counter.id);
