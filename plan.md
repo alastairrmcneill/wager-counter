@@ -330,7 +330,7 @@ Generate a branded PDF report for a single counter.
 
 ---
 
-## 📊 EPIC 9 – Analytics & Instrumentation
+## 📊 EPIC 9 – ✅ Done Analytics & Instrumentation
 
 ---
 
@@ -359,7 +359,7 @@ Connect the analytics client created before to mixpanel, while keeping the proje
 
 ---
 
-### Story 9.3 – Emit Core Events
+### Story 9.3 – ✅ Done Emit Core Events
 
 **Description:**
 
@@ -380,7 +380,7 @@ Track key app interactions as defined in the spec.
 
 ---
 
-### Story 9.4 – Add Context to Analytics Payloads
+### Story 9.4 – ✅ Done Add Context to Analytics Payloads
 
 **Description:**
 

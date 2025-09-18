@@ -44,8 +44,8 @@ export default {
     extra: {
       // Analytics configuration
       mixpanelProjectToken: process.env.MIXPANEL_PROJECT_TOKEN,
-      analyticsEnabled: process.env.NODE_ENV === "production" || process.env.ENABLE_ANALYTICS === "true",
-      analyticsDebug: process.env.NODE_ENV !== "production",
+      analyticsEnabled: true, //process.env.NODE_ENV === "production" || process.env.ENABLE_ANALYTICS === "true",
+      analyticsDebug: false, //process.env.NODE_ENV !== "production",
     },
   },
 };

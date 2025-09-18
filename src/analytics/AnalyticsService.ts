@@ -58,6 +58,14 @@ export class AnalyticsService {
     try {
       const config = getAnalyticsConfig();
 
+      console.log("🔧 Analytics config:", {
+        hasProjectToken: !!config.mixpanelProjectToken,
+        projectTokenLength: config.mixpanelProjectToken?.length || 0,
+        analyticsEnabled: config.analyticsEnabled,
+        analyticsDebug: config.analyticsDebug,
+        isMixpanelConfigured: isMixpanelConfigured(),
+      });
+
       // If Mixpanel is configured and analytics is enabled, use Mixpanel
       if (isMixpanelConfigured()) {
         console.log("📊 Initializing analytics with Mixpanel");
@@ -74,6 +82,7 @@ export class AnalyticsService {
 
       // Fall back to console client for development or when Mixpanel is not configured
       console.log("📊 Initializing analytics with Console client (development/fallback)");
+      console.log("Reason: Mixpanel not configured or analytics disabled");
       await this.initializeConsoleClient();
     } catch (error) {
       console.error("Failed to initialize analytics from environment:", error);
@@ -88,15 +97,20 @@ export class AnalyticsService {
    * @param payload - Optional event properties/payload
    */
   async trackEvent(eventName: string, payload?: AnalyticsEventPayload): Promise<void> {
+    console.log("🎯 AnalyticsService.trackEvent called:", eventName, payload);
+
     if (!this.client) {
-      console.warn("Analytics not initialized, skipping event:", eventName);
+      console.warn("❌ Analytics not initialized, skipping event:", eventName);
       return;
     }
 
+    console.log("🔄 Delegating to analytics client:", this.currentProvider);
+
     try {
       await this.client.trackEvent(eventName, payload);
+      console.log("✅ Event tracking completed:", eventName);
     } catch (error) {
-      console.error("Failed to track event:", eventName, error);
+      console.error("❌ Failed to track event:", eventName, error);
     }
   }
 
@@ -169,6 +183,29 @@ export class AnalyticsService {
    */
   isInitialized(): boolean {
     return this.client !== null;
+  }
+
+  /**
+   * Get debug information about the current analytics setup
+   */
+  getDebugInfo(): object {
+    const config = getAnalyticsConfig();
+    return {
+      initialized: this.isInitialized(),
+      currentProvider: this.currentProvider,
+      client: this.client ? this.client.constructor.name : null,
+      config: {
+        hasProjectToken: !!config.mixpanelProjectToken,
+        projectTokenLength: config.mixpanelProjectToken?.length || 0,
+        analyticsEnabled: config.analyticsEnabled,
+        analyticsDebug: config.analyticsDebug,
+        isMixpanelConfigured: isMixpanelConfigured(),
+      },
+      environment: {
+        nodeEnv: process.env.NODE_ENV,
+        enableAnalytics: process.env.ENABLE_ANALYTICS,
+      },
+    };
   }
 }
 
