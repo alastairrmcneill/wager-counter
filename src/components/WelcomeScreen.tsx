@@ -3,6 +3,8 @@ import { SymbolView } from "expo-symbols";
 import React, { useRef } from "react";
 import { Dimensions, FlatList, Image, StyleSheet, Text, View } from "react-native";
 
+import { Laurel } from "@/src/components/Laurel";
+
 import { trackEvent } from "@/src/analytics";
 import { AnalyticsEvents } from "@/src/analytics/events";
 import { ThemedView } from "@/src/components/ThemedView";
@@ -53,7 +55,7 @@ export function WelcomeScreen() {
     <View style={styles.testimonialSlide}>
       <View style={styles.testimonial}>
         <View style={styles.testimonialContent}>
-          <SymbolView name="laurel.leading" size={72} tintColor={brandColors.mint[400]} />
+          <Laurel side="leading" size={72} color={brandColors.mint[400]} />
           <View style={styles.testimonialCenter}>
             <Text style={styles.testimonialAuthor}>{item.name}</Text>
             <Text style={styles.testimonialText}>{item.text}</Text>
@@ -65,7 +67,7 @@ export function WelcomeScreen() {
               </View>
             </View>
           </View>
-          <SymbolView name="laurel.trailing" size={72} tintColor={brandColors.mint[400]} />
+          <Laurel side="trailing" size={72} color={brandColors.mint[400]} />
         </View>
       </View>
     </View>
