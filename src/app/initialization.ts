@@ -28,10 +28,6 @@ let persistenceCleanup: (() => void) | null = null;
  * Initialize the app - hydrate stores, validate data, setup persistence
  */
 export const initializeApp = async (): Promise<InitializationResult> => {
-  console.log("🚀 Initializing Wager Counter app...");
-
-  // Step 1: Hydrate stores from MMKV
-  console.log("📦 Hydrating stores from storage...");
   const hydrationResult = await hydrateStores();
 
   if (!hydrationResult.success) {

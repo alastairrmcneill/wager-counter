@@ -1,4 +1,4 @@
-package com.anonymous.wagercounter
+package com.alastairrmcneill.spinz
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

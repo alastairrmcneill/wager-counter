@@ -25,7 +25,9 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="wagercounter"/>
-        <data android:scheme="exp+wager-counter"/>
+        <data android:scheme="exp+Spinz"/>
+        <data android:scheme="spinz"/>
+        <data android:scheme="exp+spinz"/>
       </intent-filter>
     </activity>
   </application>

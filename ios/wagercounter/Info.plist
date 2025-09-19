@@ -7,7 +7,7 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>CFBundleDisplayName</key>
-    <string>wager-counter</string>
+    <string>Spinz</string>
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>
     <key>CFBundleIdentifier</key>
@@ -27,14 +27,14 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>wagercounter</string>
-          <string>com.anonymous.wagercounter</string>
+          <string>spinz</string>
+          <string>com.alastairrmcneill.spinz</string>
         </array>
       </dict>
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>exp+wager-counter</string>
+          <string>exp+spinz</string>
         </array>
       </dict>
     </array>

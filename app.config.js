@@ -1,16 +1,16 @@
 export default {
   expo: {
-    name: "wager-counter",
-    slug: "wager-counter",
+    name: "Spinz",
+    slug: "spinz",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
-    scheme: "wagercounter",
+    scheme: "spinz",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     ios: {
       supportsTablet: true,
-      bundleIdentifier: "com.anonymous.wagercounter",
+      bundleIdentifier: "com.alastairrmcneill.spinz",
     },
     android: {
       adaptiveIcon: {
@@ -18,7 +18,7 @@ export default {
         backgroundColor: "#ffffff",
       },
       edgeToEdgeEnabled: true,
-      package: "com.anonymous.wagercounter",
+      package: "com.alastairrmcneill.spinz",
     },
     web: {
       bundler: "metro",

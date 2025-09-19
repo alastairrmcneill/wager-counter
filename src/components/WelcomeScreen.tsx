@@ -88,7 +88,7 @@ export function WelcomeScreen() {
 
       {/* Title and Subtitle */}
       <View style={styles.header}>
-        <Text style={styles.welcomeTitle}>Welcome to{"\n"}Wager Counter!</Text>
+        <Text style={styles.welcomeTitle}>Welcome to{"\n"}Spinz!</Text>
         <Text style={styles.subtitle}>Keep track of your wagering requirements</Text>
       </View>
 
