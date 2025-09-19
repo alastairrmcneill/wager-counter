@@ -1,3 +1,4 @@
+import { LinearGradient } from "expo-linear-gradient";
 import { SymbolView } from "expo-symbols";
 import React, { useRef } from "react";
 import { Dimensions, FlatList, Image, StyleSheet, Text, View } from "react-native";
@@ -74,11 +75,12 @@ export function WelcomeScreen() {
     <ThemedView style={styles.container}>
       {/* Background/Placeholder Image with Fade Overlay */}
       <View style={styles.backgroundImageContainer}>
-        <View style={styles.backgroundImagePlaceholder} />
-        {/* Create fade effect with multiple overlays */}
-        <View style={[styles.fadeOverlay, { opacity: 0.1, height: 60, bottom: 20 }]} />
-        <View style={[styles.fadeOverlay, { opacity: 0.3, height: 40, bottom: 10 }]} />
-        <View style={[styles.fadeOverlay, { opacity: 0.6, height: 20, bottom: 0 }]} />
+        <Image source={require("@/assets/images/welcome-background.png")} style={styles.backgroundImagePlaceholder} />
+        <LinearGradient
+          colors={["transparent", "transparent", brandColors.gunmetal[50]]}
+          locations={[0, 0.2, 0.9]}
+          style={styles.gradientMask}
+        />
       </View>
 
       {/* App Icon - Overlapping the image */}
@@ -127,13 +129,22 @@ const styles = StyleSheet.create({
     backgroundColor: brandColors.gunmetal[50],
   },
   backgroundImagePlaceholder: {
+    width: "100%",
     height: 180,
     backgroundColor: brandColors.gunmetal[100],
     borderRadius: 0,
+    resizeMode: "cover",
   },
   backgroundImageContainer: {
     position: "relative",
     height: 180,
+  },
+  gradientMask: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   fadeOverlay: {
     position: "absolute",
