@@ -173,6 +173,7 @@ export function OnboardingWizard() {
       onNext={handleNextFromStep1}
       showBackButton={false}
     >
+      <Text style={styles.stepHeader}>Let&apos;s get started with your first counter!</Text>
       <Text style={styles.description}>Give your counter a memorable name</Text>
       <TextInput
         style={styles.textInput}
@@ -195,7 +196,8 @@ export function OnboardingWizard() {
       onNext={handleNextFromStep2}
       nextButtonDisabled={!targetAmount || parseFloat(targetAmount) <= 0}
     >
-      <Text style={styles.description}>Enter the total amount you need to wager</Text>
+      <Text style={styles.stepHeader}>Now let&apos;s get the total amount you are wagering.</Text>
+      <Text style={styles.description}>Enter the wagering value for this offer</Text>
       <View style={styles.currencyInputContainer}>
         <Text style={styles.currencySymbol}>£</Text>
         <TextInput
@@ -224,6 +226,8 @@ export function OnboardingWizard() {
         nextButtonText="Create Counter"
         nextButtonDisabled={!stakeAmount || parseFloat(stakeAmount) <= 0}
       >
+        <Text style={styles.stepHeader}>And what size stakes are you going to be using?</Text>
+
         <Text style={styles.description}>Enter how much you&apos;ll wager on each spin</Text>
         <View style={styles.currencyInputContainer}>
           <Text style={styles.currencySymbol}>£</Text>
@@ -287,6 +291,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   stepHeader: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: brandColors.gunmetal[950],
+    textAlign: "center",
     alignItems: "center",
     marginBottom: 40,
   },
