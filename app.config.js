@@ -46,6 +46,7 @@ export default {
       mixpanelProjectToken: process.env.MIXPANEL_PROJECT_TOKEN,
       analyticsEnabled: true, //process.env.NODE_ENV === "production" || process.env.ENABLE_ANALYTICS === "true",
       analyticsDebug: false, //process.env.NODE_ENV !== "production",
+      eas: { projectId: "3ab58dfb-5f8b-4020-96e4-5828282d52de" },
     },
   },
 };
