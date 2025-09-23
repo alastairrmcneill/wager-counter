@@ -12,17 +12,11 @@ interface CounterHeaderProps {
   showBackButton?: boolean;
 }
 
-export function CounterHeader({
-  title,
-  onBackPress,
-  onSettingsPress,
-  onExportPress,
-  showBackButton = true,
-}: CounterHeaderProps) {
+export function CounterHeader({ title, onBackPress, onSettingsPress, onExportPress }: CounterHeaderProps) {
   return (
     <View style={styles.header}>
-      <TouchableOpacity style={styles.headerButton} onPress={onBackPress} disabled={!showBackButton}>
-        {showBackButton && <ThemedText style={styles.headerIcon}>←</ThemedText>}
+      <TouchableOpacity style={styles.headerButton} onPress={onBackPress}>
+        <FontAwesome5 name="chevron-left" size={20} color="#687076" />
       </TouchableOpacity>
 
       <ThemedText style={styles.headerTitle}>{title}</ThemedText>

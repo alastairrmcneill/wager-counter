@@ -18,9 +18,6 @@ interface TargetCompletionDialogProps {
   onExport?: () => void;
 }
 
-/**
- * Format elapsed time in milliseconds to a readable string
- */
 const formatElapsedTime = (ms: number): string => {
   const totalSeconds = Math.floor(ms / 1000);
   const hours = Math.floor(totalSeconds / 3600);
@@ -51,7 +48,6 @@ export function TargetCompletionDialog({
       <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={onClose}>
         <TouchableOpacity style={styles.dialog} activeOpacity={1} onPress={(e) => e.stopPropagation()}>
           <View style={styles.content}>
-            {/* Header */}
             <View style={styles.header}>
               <ThemedText style={styles.title}>🎉 Target Reached!</ThemedText>
               <ThemedText style={styles.subtitle}>
@@ -59,7 +55,6 @@ export function TargetCompletionDialog({
               </ThemedText>
             </View>
 
-            {/* Stats */}
             <View style={styles.statsContainer}>
               <View style={styles.statRow}>
                 <ThemedText style={styles.statLabel}>Total Wagered:</ThemedText>
@@ -82,7 +77,6 @@ export function TargetCompletionDialog({
               </View>
             </View>
 
-            {/* Actions */}
             <View style={styles.buttonContainer}>
               {spins && onExport && (
                 <Button title="Export CSV" onPress={onExport} variant="secondary" size="large" style={styles.button} />

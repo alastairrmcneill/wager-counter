@@ -75,7 +75,6 @@ export function WelcomeScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      {/* Background/Placeholder Image with Fade Overlay */}
       <View style={styles.backgroundImageContainer}>
         <Image source={require("@/assets/images/welcome-background.png")} style={styles.backgroundImagePlaceholder} />
         <LinearGradient
@@ -85,21 +84,17 @@ export function WelcomeScreen() {
         />
       </View>
 
-      {/* App Icon - Overlapping the image */}
       <View style={styles.iconContainer}>
         <Image source={require("@/assets/images/icon.png")} style={styles.icon} />
       </View>
 
-      {/* Title and Subtitle */}
       <View style={styles.header}>
         <Text style={styles.welcomeTitle}>Welcome to{"\n"}Spinz!</Text>
         <Text style={styles.subtitle}>Keep track of your wagering requirements</Text>
       </View>
 
-      {/* Flexible spacer */}
       <View style={styles.flexSpacer} />
 
-      {/* Testimonials Section */}
       <View style={styles.testimonialsSection}>
         <FlatList
           ref={flatListRef}
@@ -117,7 +112,6 @@ export function WelcomeScreen() {
         />
       </View>
 
-      {/* Continue Button */}
       <View style={styles.buttonContainer}>
         <Button title="Continue" onPress={handleContinue} size="large" style={styles.continueButton} />
       </View>

@@ -17,7 +17,6 @@ export function CounterStats({ counter, spinsCount, avgSpinsPerMin }: CounterSta
 
   return (
     <View style={styles.statsContainer}>
-      {/* Top row - Target and Wagered amounts */}
       <View style={styles.amountsRow}>
         <View style={styles.amountContainer}>
           <ThemedText style={styles.amountValue}>{formatGBP(counter.targetPence)}</ThemedText>
@@ -29,7 +28,6 @@ export function CounterStats({ counter, spinsCount, avgSpinsPerMin }: CounterSta
         </View>
       </View>
 
-      {/* Progress section */}
       <View style={styles.progressSection}>
         <View style={styles.progressHeader}>
           <ThemedText style={styles.progressLabel}>Progress</ThemedText>
@@ -38,7 +36,6 @@ export function CounterStats({ counter, spinsCount, avgSpinsPerMin }: CounterSta
         <ProgressBar progress={progress} size="large" style={styles.progressBar} />
       </View>
 
-      {/* Bottom row - Spins stats */}
       <View style={styles.spinsRow}>
         <View style={styles.spinContainer}>
           <ThemedText style={styles.spinValue}>{spinsCount.toLocaleString()}</ThemedText>

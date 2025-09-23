@@ -19,11 +19,9 @@ interface CounterActions {
 type CounterStore = CounterState & CounterActions;
 
 export const useCounterStore = create<CounterStore>((set, get) => ({
-  // State
   counters: [],
   activeCounterId: null,
 
-  // Actions
   addCounter: (counterData) => {
     const now = Date.now();
     const counter: Counter = {
@@ -35,6 +33,7 @@ export const useCounterStore = create<CounterStore>((set, get) => ({
 
     set((state) => ({
       counters: [...state.counters, counter],
+      activeCounterId: counter.id,
     }));
   },
 

@@ -14,7 +14,6 @@ interface CounterControlsProps {
 export function CounterControls({ counter, onIncrement, onUndo, canUndo }: CounterControlsProps) {
   return (
     <View style={styles.controlsContainer}>
-      {/* Undo button */}
       <TouchableOpacity
         style={[styles.undoButton, !canUndo && styles.undoButtonDisabled]}
         onPress={onUndo}
@@ -26,7 +25,6 @@ export function CounterControls({ counter, onIncrement, onUndo, canUndo }: Count
         <ThemedText style={[styles.undoText, !canUndo && styles.undoTextDisabled]}>Undo Last Spin</ThemedText>
       </TouchableOpacity>
 
-      {/* Large spin button */}
       <TouchableOpacity style={styles.spinButton} onPress={onIncrement}>
         <View style={styles.spinIconContainer}>
           <ThemedText style={styles.spinIcon}>⟲</ThemedText>

@@ -11,7 +11,6 @@ import { toPence } from "@/src/utils";
 
 interface WizardStepProps {
   step: number;
-  title: string;
   children: React.ReactNode;
   onNext?: () => void;
   nextButtonText?: string;
@@ -45,13 +44,11 @@ function WizardStep({
 }
 
 export function OnboardingWizard() {
-  const { setCompleted, setCurrentStep: setOnboardingStep } = useOnboardingStore();
-  const { addCounter, setActiveCounter } = useCounterStore();
+  const { setCompleted, setCurrentStep, currentStep } = useOnboardingStore();
+  const { addCounter } = useCounterStore();
 
-  const [currentStep, setCurrentStep] = useState(1);
   const [counterName, setCounterName] = useState("Counter");
 
-  // Track when user reaches each onboarding page
   useEffect(() => {
     switch (currentStep) {
       case 1:
@@ -99,7 +96,6 @@ export function OnboardingWizard() {
       return;
     }
 
-    // Create the counter
     const newCounter = {
       name: counterName.trim(),
       targetPence: toPence(targetValue),
@@ -108,38 +104,23 @@ export function OnboardingWizard() {
     };
 
     addCounter(newCounter);
+    setCompleted(true);
 
-    // Track onboarding completion
     trackEvent(AnalyticsEvents.ONBOARDING_COMPLETE, {
       counterName: counterName.trim(),
       targetPence: toPence(targetValue),
       stakePence: toPence(stakeValue),
     });
-
-    // Get the most recently created counter (should be the last in the array)
-    // Use a small timeout to ensure the state has updated
-    setTimeout(() => {
-      const counters = useCounterStore.getState().counters;
-      if (counters.length > 0) {
-        const newestCounter = counters[counters.length - 1];
-        setActiveCounter(newestCounter.id);
-      }
-      setCompleted(true);
-      setOnboardingStep(0); // Reset the onboarding step for next time
-    }, 50);
   };
 
   const formatCurrency = (value: string): string => {
-    // Remove non-numeric characters except decimal point
     const cleaned = value.replace(/[^0-9.]/g, "");
 
-    // Ensure only one decimal point
     const parts = cleaned.split(".");
     if (parts.length > 2) {
       return parts[0] + "." + parts.slice(1).join("");
     }
 
-    // Limit to 2 decimal places
     if (parts[1] && parts[1].length > 2) {
       return parts[0] + "." + parts[1].substring(0, 2);
     }
@@ -167,12 +148,7 @@ export function OnboardingWizard() {
   };
 
   const renderStep1 = () => (
-    <WizardStep
-      step={1}
-      title="What would you like to call your counter?"
-      onNext={handleNextFromStep1}
-      showBackButton={false}
-    >
+    <WizardStep step={1} onNext={handleNextFromStep1} showBackButton={false}>
       <Text style={styles.stepHeader}>Let&apos;s get started with your first counter!</Text>
       <Text style={styles.description}>Give your counter a memorable name</Text>
       <TextInput
@@ -192,7 +168,6 @@ export function OnboardingWizard() {
   const renderStep2 = () => (
     <WizardStep
       step={2}
-      title="What's your target amount?"
       onNext={handleNextFromStep2}
       nextButtonDisabled={!targetAmount || parseFloat(targetAmount) <= 0}
     >
@@ -221,13 +196,11 @@ export function OnboardingWizard() {
     return (
       <WizardStep
         step={3}
-        title="What's your stake per spin?"
         onNext={handleCreateCounter}
         nextButtonText="Create Counter"
         nextButtonDisabled={!stakeAmount || parseFloat(stakeAmount) <= 0}
       >
         <Text style={styles.stepHeader}>And what size stakes are you going to be using?</Text>
-
         <Text style={styles.description}>Enter how much you&apos;ll wager on each spin</Text>
         <View style={styles.currencyInputContainer}>
           <Text style={styles.currencySymbol}>£</Text>
@@ -362,7 +335,7 @@ const styles = StyleSheet.create({
   spinsNeededContainer: {
     marginTop: 24,
     padding: 16,
-    backgroundColor: brandColors.mint[400] + "20", // 20% opacity
+    backgroundColor: brandColors.mint[400] + "20",
     borderRadius: 12,
     alignItems: "center",
   },

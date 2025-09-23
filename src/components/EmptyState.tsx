@@ -1,18 +1,9 @@
 import { brandColors } from "@/src/constants/DesignSystem";
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { Spacing } from "../constants/Spacing";
 import { ThemedText } from "./ThemedText";
 import { Button } from "./ui/Button";
-
-// Define spacing constants
-const spacing = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-  xxl: 48,
-};
 
 interface EmptyStateProps {
   onCreateCounter: () => void;
@@ -43,7 +34,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: spacing.xl,
+    paddingHorizontal: Spacing.xl,
   },
   content: {
     alignItems: "center",
@@ -53,7 +44,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "600",
     color: brandColors.gunmetal[900],
-    marginBottom: spacing.md,
+    marginBottom: Spacing.md,
     textAlign: "center",
   },
   description: {
@@ -61,7 +52,7 @@ const styles = StyleSheet.create({
     color: brandColors.gunmetal[600],
     textAlign: "center",
     lineHeight: 24,
-    marginBottom: spacing.xl,
+    marginBottom: Spacing.xl,
   },
   button: {
     minWidth: 160,

@@ -32,7 +32,7 @@ export default function CounterScreen() {
   };
 
   const handleBackPress = () => {
-    setActiveCounter(null); // This will navigate back to the home screen
+    setActiveCounter(null);
   };
 
   const handleExportCsv = async () => {
@@ -41,31 +41,7 @@ export default function CounterScreen() {
     try {
       await ExportService.exportSpinsCsv(spins, counter.name);
 
-      // Track export CSV event
       trackEvent(AnalyticsEvents.EXPORT_CSV, {
-        counterId: counter.id,
-        exportType: "csv",
-        totalSpins: spins.length,
-        wageredPence: counter.wageredPence,
-        targetPence: counter.targetPence,
-      });
-    } catch (error) {
-      Alert.alert(
-        "Export Failed",
-        error instanceof Error ? error.message : "Failed to export CSV file. Please try again.",
-        [{ text: "OK" }]
-      );
-    }
-  };
-
-  const handleExportCsvFromCompletion = async () => {
-    if (!counter) return;
-
-    try {
-      await ExportService.exportSpinsCsv(spins, counter.name);
-
-      // Track export CSV from completion dialog event
-      trackEvent(AnalyticsEvents.EXPORT_CSV_FROM_COMPLETION, {
         counterId: counter.id,
         exportType: "csv",
         totalSpins: spins.length,
@@ -86,24 +62,19 @@ export default function CounterScreen() {
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={false} />
 
       <CounterHeader
-        title={counter?.name || "Test Counter"}
+        title={counter?.name || "Counter"}
         onBackPress={handleBackPress}
         onSettingsPress={handleOpenSettings}
         onExportPress={handleExportCsv}
-        showBackButton={true}
       />
 
       {counter && (
         <View style={styles.content}>
-          {/* Stats Section */}
           <CounterStats counter={counter} spinsCount={spins.length} avgSpinsPerMin={sessionStats.avgSpinsPerMin} />
-
-          {/* Controls Section */}
           <CounterControls counter={counter} onIncrement={handleIncrement} onUndo={handleUndo} canUndo={canUndoSpin} />
         </View>
       )}
 
-      {/* Settings Dialog */}
       {counter && (
         <SettingsDialog
           visible={showSettingsDialog}
@@ -113,7 +84,6 @@ export default function CounterScreen() {
         />
       )}
 
-      {/* Target Completion Dialog */}
       {counter && showTargetDialog && (
         <TargetCompletionDialog
           visible={showTargetDialog}
@@ -123,7 +93,7 @@ export default function CounterScreen() {
           elapsedMs={sessionStats.elapsedMs}
           avgSpinsPerMin={sessionStats.avgSpinsPerMin}
           spins={spins}
-          onExport={handleExportCsvFromCompletion}
+          onExport={handleExportCsv}
         />
       )}
     </ThemedView>
@@ -133,7 +103,7 @@ export default function CounterScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight || 44, // Add status bar height for Android, default for iOS
+    paddingTop: StatusBar.currentHeight || 44,
   },
   content: {
     flex: 1,

@@ -62,7 +62,7 @@ export function SettingsDialog({ visible, onClose, currentStakePence, onStakeCha
                 keyboardType="decimal-pad"
                 returnKeyType="done"
                 selectTextOnFocus
-                maxLength={7} // Max 1000.00
+                maxLength={7}
               />
             </View>
           </View>

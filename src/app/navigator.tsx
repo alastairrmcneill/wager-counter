@@ -44,7 +44,6 @@ export default function AppNavigator() {
 
   // Main flow: Check if onboarding is completed
   if (isCompleted) {
-    // Onboarding completed → Always show home screen (list of counters) on app open
     return (
       <HomeScreen
         counters={counters}

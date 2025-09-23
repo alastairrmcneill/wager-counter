@@ -3,35 +3,13 @@ import { Counter } from "@/src/types/domain";
 import { formatGBP } from "@/src/utils/currency";
 import * as Haptics from "expo-haptics";
 import React, { useCallback, useRef } from "react";
-import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
+import { Spacing } from "../constants/Spacing";
+import DeleteAction from "./CounterListItemDeleteAction";
 import { ThemedText } from "./ThemedText";
 import { ProgressBar } from "./ui/ProgressBar";
-
-// Define spacing constants
-const spacing = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-};
-
-function DeleteAction({ onPress, counterName }: { onPress: () => void; counterName: string }) {
-  return (
-    <View style={styles.deleteContainer}>
-      <Pressable
-        onPress={onPress}
-        style={({ pressed }) => [styles.deleteAction, pressed && { opacity: 0.8 }]}
-        accessibilityRole="button"
-        accessibilityLabel={`Delete ${counterName}`}
-      >
-        <ThemedText style={styles.deleteLabel}>Delete</ThemedText>
-      </Pressable>
-    </View>
-  );
-}
 
 interface CounterListItemProps {
   counter: Counter;
@@ -49,13 +27,10 @@ export function CounterListItem({ counter, onPress, onDelete }: CounterListItemP
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     } catch {}
 
-    // Close the swipeable first
     swipeableRef.current?.close();
 
-    // Delete the counter
     onDelete(counter);
 
-    // Show toast message
     Toast.show({
       type: "error",
       text1: "Counter deleted",
@@ -113,8 +88,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
     borderRadius: 12,
-    marginHorizontal: spacing.md,
-    marginVertical: spacing.xs,
+    marginHorizontal: Spacing.md,
+    marginVertical: Spacing.xs,
     shadowColor: brandColors.gunmetal[950],
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -122,20 +97,20 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   content: {
-    padding: spacing.md,
+    padding: Spacing.md,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: spacing.xs,
+    marginBottom: Spacing.xs,
   },
   counterName: {
     fontSize: 18,
     fontWeight: "600",
     color: brandColors.gunmetal[900],
     flex: 1,
-    marginRight: spacing.sm,
+    marginRight: Spacing.sm,
   },
   progressText: {
     fontSize: 16,
@@ -143,7 +118,7 @@ const styles = StyleSheet.create({
     color: brandColors.gunmetal[700],
   },
   amountContainer: {
-    marginBottom: spacing.sm,
+    marginBottom: Spacing.sm,
   },
   amountText: {
     fontSize: 14,
@@ -151,27 +126,9 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   progressContainer: {
-    marginTop: spacing.xs,
+    marginTop: Spacing.xs,
   },
   progressBar: {
     height: 8,
-  },
-  deleteContainer: {
-    width: 88,
-    marginVertical: spacing.xs,
-    marginRight: spacing.md,
-  },
-  deleteAction: {
-    flex: 1,
-    backgroundColor: "#ff3b30",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 12,
-    minHeight: 80, // Approximate height to match counter content
-  },
-  deleteLabel: {
-    color: "white",
-    fontSize: 14,
-    fontWeight: "700",
   },
 });

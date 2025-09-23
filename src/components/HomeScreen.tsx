@@ -2,19 +2,11 @@ import { Counter } from "@/src/types/domain";
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Spacing } from "../constants/Spacing";
 import { CounterListItem } from "./CounterListItem";
 import { EmptyState } from "./EmptyState";
 import { HomeHeader } from "./HomeHeader";
 import { ThemedView } from "./ThemedView";
-
-// Define spacing constants
-const spacing = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-};
 
 interface HomeScreenProps {
   counters: Counter[];
@@ -62,7 +54,7 @@ export function HomeScreen({ counters, onCounterPress, onCreateCounter, onDelete
           initialNumToRender={10}
           updateCellsBatchingPeriod={50}
           getItemLayout={(data, index) => ({
-            length: 120, // Approximate height of each item
+            length: 120,
             offset: 120 * index,
             index,
           })}
@@ -80,7 +72,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   listContainer: {
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.xl,
+    paddingTop: Spacing.sm,
+    paddingBottom: Spacing.xl,
   },
 });
